@@ -210,6 +210,11 @@ int main(int argc, char *argv[])
       res.push_back(curline);
     }
 
+    for(int i = 0; i < res.size(); i++) {
+        cout << res[i] << " ";
+      }
+      cout << endl;
+
     if(curline.find("BOOK") == 0) {
         //type is res[1]"
         //let's go through buy and buy all of the values less than 100
@@ -218,10 +223,7 @@ int main(int argc, char *argv[])
       int curind = getind(securids, res[1]);
 
         //let's go through buy and buy all of the values less than 100
-      for(int i = 0; i < res.size(); i++) {
-        cout << res[i] << " ";
-      }
-      cout << endl;
+      
 
         //find location of sell
       int locsell = getind(res, "SELL");
