@@ -38,7 +38,7 @@ private:
     1 = slower
     2 = empty
   */
-  static int const test_exchange_index = 0;
+  static int const test_exchange_index = 1;
 public:
   std::string team_name;
   std::string exchange_hostname;
@@ -237,8 +237,9 @@ map<string, double> real_fair_value_map;
 
     if(curline.find("BOOK") == 0) {
         //type is res[1]"
-      // if(res[1] == "BOND") continue;
+      if(res[1] == "VALBZ" || res[1] == "VALE") {
         //let's go through buy and buy all of the values less than 100
+      
       int numtobuy = 0;
 
       int curind = getind(securids, res[1]);
@@ -301,7 +302,7 @@ map<string, double> real_fair_value_map;
       double fairval = fair_value_map[res[1]];  
 
 
-      if(count %10 == 0){ 
+      if(count %5 == 0){ 
 
         //cancel our last two orders
       
@@ -342,6 +343,7 @@ map<string, double> real_fair_value_map;
    }
      count++;
    }
+   }
    else if(curline.find("TRADE") == 0) {
 
    }
@@ -351,6 +353,7 @@ map<string, double> real_fair_value_map;
    else{
 
    }
+
 
  }
 
