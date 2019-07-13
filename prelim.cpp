@@ -288,13 +288,13 @@ map<string, double> real_fair_value_map;
 
       if (res[1] == "VALE" || res[1] == "VALBZ") {
         if (fair_value_map["VALBZ"] != 0 && fair_value_map["VALE"] != 0) {
-          real_fair_value_map["VALBZ"] = (1/3) * fair_value_map["VALE"] + (2/3) * fair_value_map["VALBZ"];
-          real_fair_value_map["VALE"] = (1/3) * fair_value_map["VALE"] + (2/3) * fair_value_map["VALBZ"];
-          cout << "REAL FAIR VALUE OF VALBZ/VALE IS " << (1/3) * fair_value_map["VALE"] + (2/3) * fair_value_map["VALBZ"] << endl;
+          real_fair_value_map["VALBZ"] = (1/3.0) * fair_value_map["VALE"] + (2/3.0) * fair_value_map["VALBZ"];
+          real_fair_value_map["VALE"] = (1/3.0) * fair_value_map["VALE"] + (2/3.0) * fair_value_map["VALBZ"];
+          cout << "REAL FAIR VALUE OF VALBZ/VALE IS " << (1/3.0) * fair_value_map["VALE"] + (2/3.0) * fair_value_map["VALBZ"] << endl;
         }
       } else {
         if (fair_value_map["GS"] != 0 && fair_value_map["MS"] != 0 && fair_value_map["WFC"] != 0) {
-          real_fair_value_map["XLF"] = (3 * fair_value_map["BOND"] + 2 * fair_value_map["GS"] + 3 * fair_value_map["MS"] + 2 * fair_value_map["WFC"])/10;
+          real_fair_value_map["XLF"] = (3 * fair_value_map["BOND"] + 2 * fair_value_map["GS"] + 3 * fair_value_map["MS"] + 2 * fair_value_map["WFC"])/10.0;
           cout << "REAL FAIR VALUE OF XLF IS " << real_fair_value_map["XLF"] << endl;
         }
       }
