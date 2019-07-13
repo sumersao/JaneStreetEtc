@@ -213,7 +213,7 @@ int main(int argc, char *argv[])
   cout << "The exchange replied: " << line << endl;
 
   int ids = 1;
-  int Nsize = 20;
+  int Nsize = 100;
     //start our trading here
   while(1) {
       //read from the exchange
@@ -274,7 +274,7 @@ int main(int argc, char *argv[])
 
       if (bookreads[curind] == 0) {
         // SETS INTIAL VALUE
-        fair_value_map[res[1]] = (temp2 + temp1)/2.0 + 20;
+        fair_value_map[res[1]] = (temp2 + temp1)/2.0;
       } else {
         double val = bookreads[curind];
         double smoothing = 2.0;
@@ -330,7 +330,7 @@ int main(int argc, char *argv[])
         sell.push_back(res[1]);
         sell.push_back(string("SELL"));
         sell.push_back(to_string(int(fairval + 1)));
-        sell.push_back(to_string(int(amt[curind]*.3)));
+        sell.push_back(to_string(3));
         conn.send_to_exchange(join(" ", sell));
 
         for(int i = 0; i < sell.size(); i++){
