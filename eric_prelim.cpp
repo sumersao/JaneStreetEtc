@@ -242,9 +242,9 @@ int main(int argc, char *argv[])
     if(curline.find("BOOK") == 0) {
       bookreads++;
 
-      if (res[1] == "GS" || res[1] == "MS" || res[1] == "WFC" || res[1] == "XLS") {
-        continue;
-      }
+      // if (res[1] == "GS" || res[1] == "MS" || res[1] == "WFC" || res[1] == "XLS") {
+      //   continue;
+      // }
         //type is res[1]"
         //let's go through buy and buy all of the values less than 100
 
