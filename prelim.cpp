@@ -167,7 +167,7 @@ int main(int argc, char *argv[])
 
   vector<pair<int, int> > lastids;
   vector<double> lastFV;
-  vector<double> bookreads;
+  vector<int> bookreads;
   for(int i = 0; i < 7; i++){
     lastids.push_back(make_pair(0, 0));
     lastFV.push_back(0.0);
