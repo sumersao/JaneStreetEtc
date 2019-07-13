@@ -309,16 +309,14 @@ int main(int argc, char *argv[])
         }
       }
 
-      double fairval = fair_value_map[res[1]];  
+      int fairval = int(fair_value_map[res[1]]);  
 
       cout << lastFV[curind] << " " << fairval << endl;
 
-      if(abs(fairval - lastFV[curind]) > 3) {
+      if(fairval != lastFV[curind]) {
         //cancel our last two orders
 
-        cout << " i am canceling then trading " << endl;
-
-        cout << lastids[curind].first << " " << lastids[curind].second << endl;
+        cout << "did a thing " << endl;
 
         conn.send_to_exchange("CANCEL " + to_string(lastids[curind].first));
         conn.send_to_exchange("CANCEL " + to_string(lastids[curind].second));
