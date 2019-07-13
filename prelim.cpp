@@ -244,7 +244,7 @@ int main(int argc, char *argv[])
 
 
     if(curline.find("BOOK") == 0) {
-      bookreads++;
+      
         //type is res[1]"
         //let's go through buy and buy all of the values less than 100
 
@@ -290,11 +290,15 @@ int main(int argc, char *argv[])
 
       }
 
-      if (fair_value_map[res[1]] == 0) {
+      if(bookreads%10 == 0){
+        bookreads == 0;
+      }
+
+      if (bookreads == 0) {
         // SETS INTIAL VALUE
         fair_value_map[res[1]] = (temp2 + temp1)/2.0;
       } else {
-        double val = min(bookreads, 10);
+        double val = bookreads;
         double smoothing = 2.0 / (val + 1.0);
         fair_value_map[res[1]] = (temp1 + temp2)/2.0 * (smoothing/(1.0 + val)) + fair_value_map[res[1]] * (1 - smoothing/(val + 1.0));
       }
@@ -365,6 +369,7 @@ int main(int argc, char *argv[])
         lastids[curind] = make_pair(ids+1, ids+2);
         ids+=2;
       }
+      bookreads++;
     }
     else if(curline.find("TRADE") == 0) {
 
