@@ -38,7 +38,7 @@ private:
     1 = slower
     2 = empty
   */
-  static int const test_exchange_index = 1;
+  static int const test_exchange_index = 0;
 public:
   std::string team_name;
   std::string exchange_hostname;
@@ -294,9 +294,9 @@ int main(int argc, char *argv[])
         // SETS INTIAL VALUE
         fair_value_map[res[1]] = (temp2 + temp1)/2.0;
       } else {
-        // double val = min(bookreads, 10);
-        // double smoothing = 2.0 / (val + 1.0);
-        fair_value_map[res[1]] = (temp1 + temp2)/2.0 * (0.9) + fair_value_map[res[1]] * (0.1);
+        double val = min(bookreads, 100);
+        double smoothing = 2.0 / (val + 1.0);
+        fair_value_map[res[1]] = (temp1 + temp2)/2.0 * (smoothing/(1.0 + val)) + fair_value_map[res[1]] * (1 - smoothing/(val + 1.0));
       }
 
 
