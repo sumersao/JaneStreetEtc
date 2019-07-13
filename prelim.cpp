@@ -170,6 +170,8 @@ int main(int argc, char *argv[])
     string line = conn.read_from_exchange();
     cout << "The exchange replied: " << line << endl;
 
+    int ids = 1;
+
     //start our trading here
     while(1) {
       //read from the exchange
@@ -179,11 +181,23 @@ int main(int argc, char *argv[])
       istringstream iss(curline);
       for(string curline; iss >> curline;) {
         res.push_back(curline);
-        cout << res[0] << endl;
       }
 
       if(curline.find("BOOK") == 0) {
+        //type is res[1]
+        //let's go through buy and buy all of the values less than 100
+        int numtobuy = 0;
+        for(int i = 3, i < res.size(); i++) {
+          string cur = res[i];
+          replace(cur.begin(), cur.end(), ':', ' ');
+          vector<int> array;
+          stringstream ss(str);
+          int temp;
+          while (ss >> temp) array.push_back(temp);
 
+          cout << array[0] << " " << array[1] << endl;
+
+        }
       }
       else if(curline.find("TRADE") == 0) {
 
