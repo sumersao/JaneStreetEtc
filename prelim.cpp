@@ -222,6 +222,10 @@ int main(int argc, char *argv[])
             sell.push_back(string("SELL"));
             sell.push_back(to_string(array[0]));
             sell.push_back(to_string(array[1]));
+            for(int i = 0; i < sell.size(); i++ ){ 
+              cout << sell[i] << " ";
+            }
+            cout << endl;
             conn.send_to_exchange(join(" ", sell));
             ids++;
           }
@@ -246,6 +250,10 @@ int main(int argc, char *argv[])
             buy.push_back(to_string(array[0]));
             buy.push_back(to_string(array[1]));
             conn.send_to_exchange(join(" ", buy));
+            for(int i = 0; i < buy.size(); i++ ){ 
+              cout << buy[i] << " ";
+            }
+            cout << endl;
             ids++;
           }
 
