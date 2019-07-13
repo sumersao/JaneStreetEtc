@@ -241,6 +241,7 @@ int main(int argc, char *argv[])
 
     if(curline.find("BOOK") == 0) {
       bookreads++;
+      
 
       // if (res[1] == "GS" || res[1] == "MS" || res[1] == "WFC" || res[1] == "XLS") {
       //   continue;
@@ -295,7 +296,7 @@ int main(int argc, char *argv[])
         fair_value_map[res[1]] = (temp2 + temp1)/2.0;
       } else {
         double val = min(bookreads, 100);
-        double smoothing = 2.0 / (val + 1.0);
+        double smoothing = 2.0;
         fair_value_map[res[1]] = (temp1 + temp2)/2.0 * (smoothing/(1.0 + val)) + fair_value_map[res[1]] * (1 - smoothing/(val + 1.0));
       }
 
@@ -321,7 +322,7 @@ int main(int argc, char *argv[])
       cout << "REAL VALUE OF VALE IS " << real_fair_value_map["VALE"] << endl;
       cout << "MARKET VALUE OF VALBZ IS " << fair_value_map["VALBZ"] << endl;
       cout << "MARKET VALUE OF VALE IS " << fair_value_map["VALE"] << endl;
-
+      cout << "REAL VALUE OF XLF IS " << real_fair_value_map["XLF"] << endl;
       cout << lastFV[curind] << " " << fairval << endl;
 
       if(abs(fairval - lastFV[curind]) > 3) {
