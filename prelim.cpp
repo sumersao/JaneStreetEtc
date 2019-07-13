@@ -217,11 +217,11 @@ int main(int argc, char *argv[])
           if(array[0] > 1000) {
             vector<string> sell;
             sell.push_back(string("ADD"));
-            sell.push_back(string(ids));
+            sell.push_back(to_string(ids));
             sell.push_back(res[1]);
             sell.push_back(string("SELL"));
-            sell.push_back(string(array[0]));
-            sell.push_back(string(array[1]));
+            sell.push_back(to_string(array[0]));
+            sell.push_back(to_string(array[1]));
             conn.send_to_exchange(join(" ", sell));
             ids++;
           }
@@ -240,11 +240,11 @@ int main(int argc, char *argv[])
           if(array[0] < 1000){
             vector<string> buy;
             buy.push_back(string("ADD"));
-            buy.push_back(string(ids));
+            buy.push_back(to_string(ids));
             buy.push_back(res[1]);
             buy.push_back(string("BUY"));
-            buy.push_back(string(array[0]));
-            buy.push_back(string(array[1]));
+            buy.push_back(to_string(array[0]));
+            buy.push_back(to_string(array[1]));
             conn.send_to_exchange(join(" ", buy));
             ids++;
           }
