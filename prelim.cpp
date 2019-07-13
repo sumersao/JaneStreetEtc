@@ -167,8 +167,8 @@ int main(int argc, char *argv[])
 
   cout << "goddamn " << endl;
 
-  vector<pair<int, int> > lastids(7);
-  for(int i = 0; i < lastids.size(); i++){
+  vector<pair<int, int> > lastids;
+  for(int i = 0; i < 7; i++){
     lastids.push_back(make_pair(0, 0));
   }
 
