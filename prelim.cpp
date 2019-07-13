@@ -22,6 +22,7 @@
 #include <algorithm>
 #include <vector>
 #include <sstream>
+#include <map>
 
 
 using namespace std;
@@ -174,6 +175,14 @@ int main(int argc, char *argv[])
     Configuration config(test_mode);
     Connection conn(config);
 
+    map<string, double> fair_value_map;
+    fair_value_map["VALBZ"] = 0.0;
+    fair_value_map["VALE"] = 0.0;
+    fair_value_map["GS"] = 0.0;
+    fair_value_map["MS"] = 0.0;
+    fair_value_map["WFC"] = 0.0;
+    fair_value_map["XLF"] = 0.0;
+
     std::vector<std::string> data;
     data.push_back(std::string("HELLO"));
     data.push_back(config.team_name);
@@ -201,7 +210,7 @@ int main(int argc, char *argv[])
       }
 
       if(curline.find("BOOK") == 0) {
-        //type is res[1]
+        //type is res[1]"
         if(res[1] != "BOND") continue;
 
         int curind = getind(securids, res[1]);
@@ -218,6 +227,9 @@ int main(int argc, char *argv[])
         //find location of sell
         int locsell = getind(res, "SELL");
 
+
+
+        //here is buy
         for(int i = 3; i < locsell; i++) {
           string cur = res[i];
           replace(cur.begin(), cur.end(), ':', ' ');
@@ -226,22 +238,6 @@ int main(int argc, char *argv[])
           int temp;
           while (ss >> temp) array.push_back(temp);
 
-          //first is price, second is amount
-          // if(array[0] > 1000) {
-          //   vector<string> sell;
-          //   sell.push_back(string("ADD"));
-          //   sell.push_back(to_string(ids));
-          //   sell.push_back(res[1]);
-          //   sell.push_back(string("SELL"));
-          //   sell.push_back(to_string(array[0]));
-          //   sell.push_back(to_string(array[1]));
-          //   for(int i = 0; i < sell.size(); i++ ){ 
-          //     cout << sell[i] << " ";
-          //   }
-          //   cout << endl;
-          //   conn.send_to_exchange(join(" ", sell));
-          //   ids++;
-          // }
         }
 
         //here is sell
@@ -252,24 +248,6 @@ int main(int argc, char *argv[])
           stringstream ss(cur);
           int temp;
           while (ss >> temp) array.push_back(temp);
-
-
-          // if(array[0] < 1000){
-          //   vector<string> buy;
-          //   buy.push_back(string("ADD"));
-          //   buy.push_back(to_string(ids));
-          //   buy.push_back(res[1]);
-          //   buy.push_back(string("BUY"));
-          //   buy.push_back(to_string(array[0]));
-          //   buy.push_back(to_string(array[1]));
-          //   conn.send_to_exchange(join(" ", buy));
-          //   for(int i = 0; i < buy.size(); i++ ){ 
-          //     cout << buy[i] << " ";
-          //   }
-          //   cout << endl;
-          //   ids++;
-          // }
-
 
         }
         //cancel our last two orders
