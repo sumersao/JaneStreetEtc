@@ -292,7 +292,9 @@ int main(int argc, char *argv[])
 
       int t2 = getmed(hi, tot); 
 
-      cout << lo << " " << hi << endl;
+      cout << t1 << " " << t2 << endl;
+
+      int fairval = 123;
 
       if(bookreads[curind]%Nsize == 0){
         bookreads[curind] == 0;
