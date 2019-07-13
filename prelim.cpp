@@ -192,7 +192,7 @@ int main(int argc, char *argv[])
       }
 
       if(curline.find("BOOK") == 0) {
-        //type is res[1]
+        //type is res[1]"
         if(res[1] != "BOND") continue;
         //let's go through buy and buy all of the values less than 100
         int numtobuy = 0;
@@ -210,6 +210,20 @@ int main(int argc, char *argv[])
             break;
           }
         }
+
+        // FAIR VALUE CALCULATION
+        string best_sell = res[locsell + 1]
+        string best_buy = res[3]
+        replace(best_sell.begin(), best_sell.end(), ':', ' ')
+        replace(best_buy.begin(), best_sell.end(), ':'. ' ')
+        stringstream bs(best_sell);
+        stringstream bb(best_sell);
+        double temp1;
+        double temp2;
+        bs >> temp1;
+        bb >> temp2;
+        fair_value_map[res[1]] = (temp1 + temp2)/2;
+        cout << "FAIR VALUE FOR " << res[1] << " IS " << (temp1 + temp2)/2;
 
         //here is buy
         for(int i = 3; i < locsell; i++) {
@@ -229,7 +243,7 @@ int main(int argc, char *argv[])
             sell.push_back(string("SELL"));
             sell.push_back(to_string(array[0]));
             sell.push_back(to_string(array[1]));
-            for(int i = 0; i < sell.size(); i++ ){ 
+            for(int i = 0; i < sell.size(); i++ ){
               cout << sell[i] << " ";
             }
             cout << endl;
@@ -257,7 +271,7 @@ int main(int argc, char *argv[])
             buy.push_back(to_string(array[0]));
             buy.push_back(to_string(array[1]));
             conn.send_to_exchange(join(" ", buy));
-            for(int i = 0; i < buy.size(); i++ ){ 
+            for(int i = 0; i < buy.size(); i++ ){
               cout << buy[i] << " ";
             }
             cout << endl;
