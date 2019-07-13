@@ -150,7 +150,7 @@ int main(int argc, char *argv[])
   ios_base::sync_with_stdio(false);
   cin.tie(0);
   string securities[7];
-  securities = {"BOND", "VALBZ", "VALE", "GS", "MS", "WFC", "XLF"};
+  //securities = {"BOND", "VALBZ", "VALE", "GS", "MS", "WFC", "XLF"};
 
     // Be very careful with this boolean! It switches between test and prod
     bool test_mode = true;
@@ -178,8 +178,8 @@ int main(int argc, char *argv[])
 
       vector<string> res;
       istringstream iss(curline);
-      for(string a; iss >> s;) {
-        res.push_back(a);
+      for(string curline; iss >> curline;) {
+        res.push_back(curline);
         cout << res[0] << endl;
       }
 
