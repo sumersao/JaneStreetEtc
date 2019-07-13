@@ -144,8 +144,14 @@ std::string join(std::string sep, std::vector<std::string> strs) {
 }
 
 
+
 int main(int argc, char *argv[])
 {
+  ios_base::sync_with_stdio(false);
+  cin.tie(0);
+  string securities[7];
+  securities = {"BOND", "VALBZ", "VALE", "GS", "MS", "WFC", "XLF"};
+
     // Be very careful with this boolean! It switches between test and prod
     bool test_mode = true;
     Configuration config(test_mode);
@@ -161,8 +167,35 @@ int main(int argc, char *argv[])
       exponential explosion in pending messages. Please, don't do that!
     */
     conn.send_to_exchange(join(" ", data));
-    std::string line = conn.read_from_exchange();
-    std::cout << "The exchange replied: " << line << std::endl;
-    cout << "wtdF " << endl;
+    string line = conn.read_from_exchange();
+    cout << "The exchange replied: " << line << endl;
+
+    //start our trading here
+    while(true) {
+      //read from the exchange
+      string curline;
+      cin >> curline;
+
+      vector<string> res;
+      istringstream iss(curline);
+      for(string a: iss > s;) {
+        res.push_back(a);
+        cout << res[0] << endl;
+      }
+
+      if(curline.find("BOOK") == 0) {
+
+      }
+      else if(curline.find("TRADE") == 0) {
+
+      }
+      else if(curline.find("OPEN") == 0) {
+
+      }
+      else{
+
+      }
+    }
+
     return 0;
 }
