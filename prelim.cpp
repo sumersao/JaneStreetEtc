@@ -143,14 +143,31 @@ std::string join(std::string sep, std::vector<std::string> strs) {
   return stream.str();
 }
 
-
+//returns index of element in a list
+int getind(vector<string>& a, string elem) {
+  for(int i = 0; i < a.size(); i++) {
+    if(a[i] == "elem") return i;
+  }
+}
 
 int main(int argc, char *argv[])
 {
   ios_base::sync_with_stdio(false);
   cin.tie(0);
-  string securities[7];
-  //securities = {"BOND", "VALBZ", "VALE", "GS", "MS", "WFC", "XLF"};
+
+  vector<string> securids;
+  securids.push_back("BOND");
+  securids.push_back("VALBZ");
+  securids.push_back("VALE");
+  securids.push_back("GS");
+  securids.push_back("MS");
+  securids.push_back("WFC");
+  securids.push_back("XLF");
+
+  vector<pair> lastids(7);
+  for(int i = 0; i < lastids.size(); i++){
+    lastids.push_back(make_pair(0, 0));
+  }
 
     // Be very careful with this boolean! It switches between test and prod
     bool test_mode = true;
@@ -186,24 +203,21 @@ int main(int argc, char *argv[])
       if(curline.find("BOOK") == 0) {
         //type is res[1]
         if(res[1] != "BOND") continue;
-        //let's go through buy and buy all of the values less than 100
-        int numtobuy = 0;
 
+        int curind = getind(securids, res[1]);
+
+        //get fairval
+        double fairval;
+
+        //let's go through buy and buy all of the values less than 100
         for(int i = 0; i < res.size(); i++) {
           cout << res[i] << " ";
         }
         cout << endl;
 
         //find location of sell
-        int locsell = 0;
-        for(int i = 0; i < res.size(); i++){
-          if(res[i] == "SELL") {
-            locsell = i;
-            break;
-          }
-        }
+        int locsell = getind(res, "SELL");
 
-        //here is buy
         for(int i = 3; i < locsell; i++) {
           string cur = res[i];
           replace(cur.begin(), cur.end(), ':', ' ');
@@ -213,22 +227,21 @@ int main(int argc, char *argv[])
           while (ss >> temp) array.push_back(temp);
 
           //first is price, second is amount
-          if(array[0] > 1000) {
-            vector<string> sell;
-            sell.push_back(string("ADD"));
-            sell.push_back(to_string(ids));
-            sell.push_back(res[1]);
-            sell.push_back(string("SELL"));
-            sell.push_back(to_string(array[0]));
-            sell.push_back(to_string(array[1]));
-            for(int i = 0; i < sell.size(); i++ ){ 
-              cout << sell[i] << " ";
-            }
-            cout << endl;
-            conn.send_to_exchange(join(" ", sell));
-            ids++;
-          }
-
+          // if(array[0] > 1000) {
+          //   vector<string> sell;
+          //   sell.push_back(string("ADD"));
+          //   sell.push_back(to_string(ids));
+          //   sell.push_back(res[1]);
+          //   sell.push_back(string("SELL"));
+          //   sell.push_back(to_string(array[0]));
+          //   sell.push_back(to_string(array[1]));
+          //   for(int i = 0; i < sell.size(); i++ ){ 
+          //     cout << sell[i] << " ";
+          //   }
+          //   cout << endl;
+          //   conn.send_to_exchange(join(" ", sell));
+          //   ids++;
+          // }
         }
 
         //here is sell
@@ -240,25 +253,58 @@ int main(int argc, char *argv[])
           int temp;
           while (ss >> temp) array.push_back(temp);
 
-          if(array[0] < 1000){
-            vector<string> buy;
-            buy.push_back(string("ADD"));
-            buy.push_back(to_string(ids));
-            buy.push_back(res[1]);
-            buy.push_back(string("BUY"));
-            buy.push_back(to_string(array[0]));
-            buy.push_back(to_string(array[1]));
-            conn.send_to_exchange(join(" ", buy));
-            for(int i = 0; i < buy.size(); i++ ){ 
-              cout << buy[i] << " ";
-            }
-            cout << endl;
-            ids++;
-          }
+
+          // if(array[0] < 1000){
+          //   vector<string> buy;
+          //   buy.push_back(string("ADD"));
+          //   buy.push_back(to_string(ids));
+          //   buy.push_back(res[1]);
+          //   buy.push_back(string("BUY"));
+          //   buy.push_back(to_string(array[0]));
+          //   buy.push_back(to_string(array[1]));
+          //   conn.send_to_exchange(join(" ", buy));
+          //   for(int i = 0; i < buy.size(); i++ ){ 
+          //     cout << buy[i] << " ";
+          //   }
+          //   cout << endl;
+          //   ids++;
+          // }
 
 
         }
+        //cancel our last two orders
+        conn.send_to_exchange("CANCEL " + to_string(lastids[curind].first));
+        conn.send_to_exchange("CANCEL " + to_string(lastids[curind].second));
 
+        //update orders
+        vector<string> buy;
+        buy.push_back(string("ADD"));
+        buy.push_back(to_string(ids+1));
+        buy.push_back(res[1]);
+        buy.push_back(string("BUY"));
+        buy.push_back(to_string(int(fairval - 1 + .5)));
+        buy.push_back(to_string(99999));
+        conn.send_to_exchange(join(" ", buy));
+        for(int i = 0; i < buy.size(); i++ ){ 
+           cout << buy[i] << " ";
+        }
+        cout << endl;
+
+        vector<string> sell;
+        sell.push_back(string("ADD"));
+        sell.push_back(to_string(ids+2));
+        sell.push_back(res[1]);
+        sell.push_back(string("SELL"));
+        sell.push_back(to_string(int(fairval + 1 + .5)));
+        sell.push_back(to_string(99999));
+        conn.send_to_exchange(join(" ", buy));
+        for(int i = 0; i < sell.size(); i++ ){ 
+           cout << sell[i] << " ";
+        }
+        cout << endl;
+
+        bars[curind] = make_pair(ids+1, ids+2);
+        ids+=2;
       }
       else if(curline.find("TRADE") == 0) {
 
