@@ -184,6 +184,9 @@ int main(int argc, char *argv[])
   fair_value_map["WFC"] = 0.0;
   fair_value_map["XLF"] = 0.0;
 
+map<string, double> real_fair_value_map;
+  real_fair_value_map["BOND"] = 1000;
+
   std::vector<std::string> data;
   data.push_back(std::string("HELLO"));
   data.push_back(config.team_name);
@@ -280,6 +283,19 @@ int main(int argc, char *argv[])
       if (temp1 != 0 && temp2 != 0) {
         fair_value_map[res[1]] = (temp2 + temp1)/2;
         // cout << "FAIR VALUE OF << " << res[1] << " IS " << (temp2 + temp1)/2 << endl;
+      }
+
+      if (res[1] == "VALE" || res[1] == "VALBZ") {
+        if (fair_value_map["VALBZ"] != 0 && fair_value_map["VALE"] != 0) {
+          real_fair_value_map["VALBZ"] = (1/3) * fair_value_map["VALE"] + (2/3) * fair_value_map["VALBZ"];
+          real_fair_value_map["VALE"] = (1/3) * fair_value_map["VALE"] + (2/3) * fair_value_map["VALBZ"];
+          cout << "REAL FAIR VALUE OF VALBZ/VALE IS " << (1/3) * fair_value_map["VALE"] + (2/3) * fair_value_map["VALBZ"] << endl;
+        }
+      } else {
+        if (fair_value_map["GS"] != 0 && fair_value_map["MS"] != 0 && fair_value_map["WFC"] != 0) {
+          real_fair_value_map["XLF"] = (3 * fair_value_map["BOND"] + 2 * fair_value_map["GS"] + 3 * fair_value_map["MS"] + 2 * fair_value_map["WFC"])/10;
+          cout << "REAL FAIR VALUE OF XLF IS " << real_fair_value_map["XLF"] << endl;
+        }
       }
 
       double fairval = fair_value_map[res[1]];  
