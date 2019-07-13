@@ -275,10 +275,14 @@ int main(int argc, char *argv[])
 
       }
 
-      if (temp1 != 0 && temp2 != 0) {
-        fair_value_map[res[1]] = (temp2 + temp1)/2;
-        // cout << "FAIR VALUE OF << " << res[1] << " IS " << (temp2 + temp1)/2 << endl;
+      if (fair_value_map[res[1]] == 0) {
+        // SETS INTIAL VALUE
+        fair_value_map[res[1]] = (temp2 + temp1)/2.0;
+      } else {
+        double smoothing = 2.0 / (10.0 + 1.0)
+        fair_value_map[res[1]] = (temp1 + temp2)/2.0 * (smoothing/(1.0 + 10.0)) + fair_value_map[res[1]] * (smoothing/(1.0 - 10.0));
       }
+
 
       if (res[1] == "VALE" || res[1] == "VALBZ") {
         if (fair_value_map["VALBZ"] != 0 && fair_value_map["VALE"] != 0) {
@@ -295,6 +299,9 @@ int main(int argc, char *argv[])
 
       double fairval = fair_value_map[res[1]];  
 
+      cout << lastFV[curind] << " " << fairval << endl;
+
+      
       if(fairval != lastFV[curind]) {
         //cancel our last two orders
         conn.send_to_exchange("CANCEL " + to_string(lastids[curind].first));
