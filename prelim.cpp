@@ -38,7 +38,7 @@ private:
     1 = slower
     2 = empty
   */
-  static int const test_exchange_index = 1;
+  static int const test_exchange_index = 0;
 public:
   std::string team_name;
   std::string exchange_hostname;
@@ -335,6 +335,10 @@ int main(int argc, char *argv[])
         buy.push_back(to_string(amt[curind]));
         conn.send_to_exchange(join(" ", buy));
 
+        for(int i = 0; i < buy.size(); i++){
+          cout << buy[i] << " ";
+        }
+        cout << endl;
 
         vector<string> sell;
         sell.push_back(string("ADD"));
@@ -344,6 +348,12 @@ int main(int argc, char *argv[])
         sell.push_back(to_string(int(fairval + 1 + .5)));
         sell.push_back(to_string(amt[curind]));
         conn.send_to_exchange(join(" ", sell));
+
+        for(int i = 0; i < sell.size(); i++){
+          cout << sell[i] << " ";
+        }
+        cout << endl;
+
 
         lastFV[curind] = fairval;
         lastids[curind] = make_pair(ids+1, ids+2);
