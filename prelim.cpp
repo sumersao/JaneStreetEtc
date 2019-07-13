@@ -315,6 +315,11 @@ int main(int argc, char *argv[])
 
       if(abs(fairval - lastFV[curind]) > 3) {
         //cancel our last two orders
+
+        cout << " i am canceling then trading " << endl;
+
+        cout << lastids[curind].first << " " << lastids[curind].second << endl;
+
         conn.send_to_exchange("CANCEL " + to_string(lastids[curind].first));
         conn.send_to_exchange("CANCEL " + to_string(lastids[curind].second));
 
