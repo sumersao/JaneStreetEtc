@@ -147,7 +147,7 @@ std::string join(std::string sep, std::vector<std::string> strs) {
 //returns index of element in a list
 int getind(vector<string>& a, string elem) {
   for(int i = 0; i < a.size(); i++) {
-    if(a[i] == "elem") return i;
+    if(a[i] == elem) return i;
   }
 }
 
@@ -165,14 +165,11 @@ int main(int argc, char *argv[])
   securids.push_back("WFC");
   securids.push_back("XLF");
 
-  cout << "goddamn " << endl;
-
   vector<pair<int, int> > lastids;
   for(int i = 0; i < 7; i++){
     lastids.push_back(make_pair(0, 0));
   }
 
-  cout << "what the fuck" << endl;
 
     // Be very careful with this boolean! It switches between test and prod
   bool test_mode = true;
@@ -187,7 +184,6 @@ int main(int argc, char *argv[])
   fair_value_map["WFC"] = 0.0;
   fair_value_map["XLF"] = 0.0;
 
-  cout << "what the fuck " << endl;
   std::vector<std::string> data;
   data.push_back(std::string("HELLO"));
   data.push_back(config.team_name);
