@@ -172,6 +172,14 @@ int main(int argc, char *argv[])
     lastFV.push_back(0.0);
   }
 
+  vector<int> amt;
+  amt.push_back(100);
+  amt.push_back(10);
+  amt.push_back(10);
+  amt.push_back(100);
+  amt.push_back(100);
+  amt.push_back(100);
+  amt.push_back(100);
 
     // Be very careful with this boolean! It switches between test and prod
   bool test_mode = true;
@@ -234,10 +242,6 @@ int main(int argc, char *argv[])
     }
     // cout << endl;
 
-    for(int i = 0; i < res.size(); i++){
-        cout << res[i] << " ";
-      }
-      cout << endl;
 
     if(curline.find("BOOK") == 0) {
       bookreads++;
@@ -313,7 +317,7 @@ int main(int argc, char *argv[])
 
       cout << lastFV[curind] << " " << fairval << endl;
 
-      if(fairval != lastFV[curind]) {
+      if(abs(fairval - lastFV[curind]) > 1) {
         //cancel our last two orders
 
         cout << "did a thing " << endl;
@@ -328,7 +332,7 @@ int main(int argc, char *argv[])
         buy.push_back(res[1]);
         buy.push_back(string("BUY"));
         buy.push_back(to_string(int(fairval - 1 + .5)));
-        buy.push_back(to_string(9));
+        buy.push_back(to_string(amt[curind]));
         conn.send_to_exchange(join(" ", buy));
 
 
@@ -338,7 +342,7 @@ int main(int argc, char *argv[])
         sell.push_back(res[1]);
         sell.push_back(string("SELL"));
         sell.push_back(to_string(int(fairval + 1 + .5)));
-        sell.push_back(to_string(9));
+        sell.push_back(to_string(amt[curind]));
         conn.send_to_exchange(join(" ", sell));
 
         lastFV[curind] = fairval;
@@ -353,6 +357,10 @@ int main(int argc, char *argv[])
 
     }
     else{
+          for(int i = 0; i < res.size(); i++){
+        cout << res[i] << " ";
+      }
+      cout << endl;
 
     }
 
