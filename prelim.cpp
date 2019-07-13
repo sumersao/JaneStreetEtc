@@ -159,12 +159,12 @@ int main(int argc, char *argv[])
     Connection conn(config);
 
     map<string, double> fair_value_map;
-    fair_value_map.insert("VALBZ", 0.0);
-    fair_value_map.insert("VALE", 0.0);
-    fair_value_map.insert("GS", 0.0);
-    fair_value_map.insert("MS", 0.0);
-    fair_value_map.insert("WFC", 0.0);
-    fair_value_map.insert("XLF", 0.0);
+    fair_value_map["VALBZ"] = 0.0;
+    fair_value_map["VALE"] = 0.0;
+    fair_value_map["GS"] = 0.0;
+    fair_value_map["MS"] = 0.0;
+    fair_value_map["WFC"] = 0.0;
+    fair_value_map["XLF"] = 0.0;
 
     std::vector<std::string> data;
     data.push_back(std::string("HELLO"));
@@ -218,7 +218,7 @@ int main(int argc, char *argv[])
         replace(best_sell.begin(), best_sell.end(), ':', ' ')
         replace(best_buy.begin(), best_sell.end(), ':'. ' ')
         stringstream bs(best_sell);
-        stringstream bb(best_sell);
+        stringstream bb(best_buy);
         double temp1;
         double temp2;
         bs >> temp1;
