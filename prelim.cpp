@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
     Configuration config(test_mode);
     Connection conn(config);
 
-    map fair_value_map<string, double>;
+    map<string, double> fair_value_map;
     fair_value_map.insert("VALBZ", 0.0);
     fair_value_map.insert("VALE", 0.0);
     fair_value_map.insert("GS", 0.0);
