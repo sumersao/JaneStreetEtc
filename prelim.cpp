@@ -37,7 +37,7 @@ private:
     1 = slower
     2 = empty
   */
-  static int const test_exchange_index = 2;
+  static int const test_exchange_index = 1;
 public:
   std::string team_name;
   std::string exchange_hostname;
@@ -169,12 +169,12 @@ int main(int argc, char *argv[])
     conn.send_to_exchange(join(" ", data));
     string line = conn.read_from_exchange();
     cout << "The exchange replied: " << line << endl;
-
+    cout << "Why borken" << endl;
     //start our trading here
-    while(true) {
+    while(1) {
+      cout << "am i here " << endl;
       //read from the exchange
-      string curline;
-      cin >> curline;
+      string curline = conn.read_from_exchange();
 
       vector<string> res;
       istringstream iss(curline);
@@ -195,6 +195,7 @@ int main(int argc, char *argv[])
       else{
 
       }
+      break;
     }
 
     return 0;
