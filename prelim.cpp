@@ -23,6 +23,9 @@
 #include <vector>
 #include <sstream>
 
+
+using namespace std;
+
 /* The Configuration class is used to tell the bot how to connect
    to the appropriate exchange. The `test_exchange_index` variable
    only changes the Configuration when `test_mode` is set to `true`.
@@ -160,5 +163,6 @@ int main(int argc, char *argv[])
     conn.send_to_exchange(join(" ", data));
     std::string line = conn.read_from_exchange();
     std::cout << "The exchange replied: " << line << std::endl;
+    cout << "wtdF " << endl;
     return 0;
 }
