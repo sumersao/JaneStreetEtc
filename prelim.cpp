@@ -343,7 +343,7 @@ int main(int argc, char *argv[])
         lastids[curind] = make_pair(ids+1, ids+2);
         ids+=2;
       }
-      bookreads++;
+      bookreads[curind]++;
     }
     else if(curline.find("TRADE") == 0) {
 
