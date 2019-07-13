@@ -37,7 +37,7 @@ private:
     1 = slower
     2 = empty
   */
-  static int const test_exchange_index = 1;
+  static int const test_exchange_index = 0;
 public:
   std::string team_name;
   std::string exchange_hostname;
@@ -185,6 +185,7 @@ int main(int argc, char *argv[])
 
       if(curline.find("BOOK") == 0) {
         //type is res[1]
+        if(res[1] != "BOND") continue;
         //let's go through buy and buy all of the values less than 100
         int numtobuy = 0;
 
@@ -201,8 +202,6 @@ int main(int argc, char *argv[])
             break;
           }
         }
-
-        cout << locsell << endl;
 
         //here is buy
         for(int i = 3; i < locsell; i++) {
