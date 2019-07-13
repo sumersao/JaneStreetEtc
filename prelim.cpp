@@ -169,10 +169,9 @@ int main(int argc, char *argv[])
     conn.send_to_exchange(join(" ", data));
     string line = conn.read_from_exchange();
     cout << "The exchange replied: " << line << endl;
-    cout << "Why borken" << endl;
+
     //start our trading here
     while(1) {
-      cout << "am i here " << endl;
       //read from the exchange
       string curline = conn.read_from_exchange();
 
@@ -195,7 +194,6 @@ int main(int argc, char *argv[])
       else{
 
       }
-      break;
     }
 
     return 0;
