@@ -194,7 +194,14 @@ int main(int argc, char *argv[])
         cout << endl;
 
         //find location of sell
-        int locsell = find(res.begin(), res.end(), "SELL");
+
+        int locsell = 0;
+        for(int i = 0; i < res.size(); i++){
+          if(res[i] == "SELL") {
+            locsell = i;
+            break;
+          }
+        }
 
         //here is buy
         for(int i = 3; i < locsell; i++) {
