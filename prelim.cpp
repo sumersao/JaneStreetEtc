@@ -213,10 +213,10 @@ int main(int argc, char *argv[])
         }
 
         // FAIR VALUE CALCULATION
-        string best_sell = res[locsell + 1]
-        string best_buy = res[3]
-        replace(best_sell.begin(), best_sell.end(), ':', ' ')
-        replace(best_buy.begin(), best_sell.end(), ':'. ' ')
+        string best_sell = res[locsell + 1];
+        string best_buy = res[3];
+        replace(best_sell.begin(), best_sell.end(), ':', ' ');
+        replace(best_buy.begin(), best_sell.end(), ':', ' ');
         stringstream bs(best_sell);
         stringstream bb(best_buy);
         double temp1;
