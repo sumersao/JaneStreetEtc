@@ -213,7 +213,7 @@ int main(int argc, char *argv[])
   cout << "The exchange replied: " << line << endl;
 
   int ids = 1;
-  int Nsize = 100;
+  int Nsize = 20;
     //start our trading here
   while(1) {
       //read from the exchange
@@ -278,7 +278,7 @@ int main(int argc, char *argv[])
       } else {
         double val = bookreads[curind];
         double smoothing = 2.0 / (val + 1.0);
-        fair_value_map[res[1]] = (temp1 + temp2)/2.0 * (smoothing/(1.0 + val)) + fair_value_map[res[1]] * (1 - smoothing/(val + 1.0));
+        fair_value_map[res[1]] = (temp1 + temp2)/2.0 * smoothing + fair_value_map[res[1]] * (1 - smoothing/(val + 1.0));
       }
 
 
