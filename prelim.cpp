@@ -253,10 +253,7 @@ int main(int argc, char *argv[])
         //find location of sell
       int locsell = getind(res, "SELL");
 
-      // FAIR VALUE CALCULATION
-      double temp1 = 0;
-      double temp2 = 0;
-        //here is buy
+      //here is buy
       int tot = 0;
       vector<pair<int, int> > low;
       for(int i = 3; i < locsell; i++) {
@@ -272,7 +269,7 @@ int main(int argc, char *argv[])
       }
 
       //get median
-      int t1 = getmed(low, tot); 
+      int temp1 = getmed(low, tot); 
 
       //here is sell
       tot = 0;
@@ -290,54 +287,48 @@ int main(int argc, char *argv[])
 
       }
 
-      int t2 = getmed(hi, tot); 
-
-      cout << t1 << " " << t2 << endl;
-
-      int fairval = 123;
+      int temp2 = getmed(hi, tot); 
 
       if(bookreads[curind]%Nsize == 0){
         bookreads[curind] == 0;
       }
 
+      if (bookreads[curind] == 0) {
+        // SETS INTIAL VALUE
+        fair_value_map[res[1]] = (temp2 + temp1)/2.0;
+      } else {
+        double val = bookreads[curind];
+        double smoothing = 2.0;
+        fair_value_map[res[1]] = (temp1 + temp2)/2.0 * (smoothing/(1.0 + val)) + fair_value_map[res[1]] * (1 - smoothing/(val + 1.0));
+      }
 
 
-      // if (bookreads[curind] == 0) {
-      //   // SETS INTIAL VALUE
-      //   fair_value_map[res[1]] = (temp2 + temp1)/2.0;
-      // } else {
-      //   double val = bookreads[curind];
-      //   double smoothing = 2.0;
-      //   fair_value_map[res[1]] = (temp1 + temp2)/2.0 * (smoothing/(1.0 + val)) + fair_value_map[res[1]] * (1 - smoothing/(val + 1.0));
-      // }
+      if (res[1] == "VALE" || res[1] == "VALBZ") {
+        if (fair_value_map["VALBZ"] != 0 && fair_value_map["VALE"] != 0) {
+          real_fair_value_map["VALBZ"] = (1/3.0) * fair_value_map["VALE"] + (2/3.0) * fair_value_map["VALBZ"];
+          real_fair_value_map["VALE"] = (1/3.0) * fair_value_map["VALE"] + (2/3.0) * fair_value_map["VALBZ"];
+          // cout << "REAL FAIR VALUE OF VALBZ/VALE IS " << (1/3.0) * fair_value_map["VALE"] + (2/3.0) * fair_value_map["VALBZ"] << endl;
+        }
+      } else {
+        if (fair_value_map["GS"] != 0 && fair_value_map["MS"] != 0 && fair_value_map["WFC"] != 0) {
+          real_fair_value_map["XLF"] = (3 * fair_value_map["BOND"] + 2 * fair_value_map["GS"] + 3 * fair_value_map["MS"] + 2 * fair_value_map["WFC"])/10.0;
+          // cout << "REAL FAIR VALUE OF XLF IS " << real_fair_value_map["XLF"] << endl;
+        }
+      }
 
+      int fairval = int(fair_value_map[res[1]]);
+      if (res[1] == "XLF" || res[1] == "VALBZ" || res[1] == "VALE") {
+        fairval = int(real_fair_value_map[res[1]]);
+      }
 
-      // if (res[1] == "VALE" || res[1] == "VALBZ") {
-      //   if (fair_value_map["VALBZ"] != 0 && fair_value_map["VALE"] != 0) {
-      //     real_fair_value_map["VALBZ"] = (1/3.0) * fair_value_map["VALE"] + (2/3.0) * fair_value_map["VALBZ"];
-      //     real_fair_value_map["VALE"] = (1/3.0) * fair_value_map["VALE"] + (2/3.0) * fair_value_map["VALBZ"];
-      //     // cout << "REAL FAIR VALUE OF VALBZ/VALE IS " << (1/3.0) * fair_value_map["VALE"] + (2/3.0) * fair_value_map["VALBZ"] << endl;
-      //   }
-      // } else {
-      //   if (fair_value_map["GS"] != 0 && fair_value_map["MS"] != 0 && fair_value_map["WFC"] != 0) {
-      //     real_fair_value_map["XLF"] = (3 * fair_value_map["BOND"] + 2 * fair_value_map["GS"] + 3 * fair_value_map["MS"] + 2 * fair_value_map["WFC"])/10.0;
-      //     // cout << "REAL FAIR VALUE OF XLF IS " << real_fair_value_map["XLF"] << endl;
-      //   }
-      // }
+      cout << "REAL VALUE OF VALBZ IS " << real_fair_value_map["VALBZ"] << endl;
+      cout << "REAL VALUE OF VALE IS " << real_fair_value_map["VALE"] << endl;
+      cout << "MARKET VALUE OF VALBZ IS " << fair_value_map["VALBZ"] << endl;
+      cout << "MARKET VALUE OF VALE IS " << fair_value_map["VALE"] << endl;
+      cout << "REAL VALUE OF XLF IS " << real_fair_value_map["XLF"] << endl;
+      cout << lastFV[curind] << " " << fairval << endl;
 
-      // int fairval = int(fair_value_map[res[1]]);
-      // if (res[1] == "XLF" || res[1] == "VALBZ" || res[1] == "VALE") {
-      //   fairval = int(real_fair_value_map[res[1]]);
-      // }
-
-      // cout << "REAL VALUE OF VALBZ IS " << real_fair_value_map["VALBZ"] << endl;
-      // cout << "REAL VALUE OF VALE IS " << real_fair_value_map["VALE"] << endl;
-      // cout << "MARKET VALUE OF VALBZ IS " << fair_value_map["VALBZ"] << endl;
-      // cout << "MARKET VALUE OF VALE IS " << fair_value_map["VALE"] << endl;
-      // cout << "REAL VALUE OF XLF IS " << real_fair_value_map["XLF"] << endl;
-      // cout << lastFV[curind] << " " << fairval << endl;
-
-      if(abs(fairval - lastFV[curind]) > 5) {
+      if(abs(fairval - lastFV[curind]) > 3) {
         //cancel our last two orders
         conn.send_to_exchange("CANCEL " + to_string(lastids[curind].first));
         conn.send_to_exchange("CANCEL " + to_string(lastids[curind].second));
