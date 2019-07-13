@@ -40,7 +40,7 @@ public:
   std::string exchange_hostname;
   int exchange_port;
   /* replace REPLACEME with your team name! */
-  Configuration(bool test_mode) : team_name("REPLACEME"){
+  Configuration(bool test_mode) : team_name("liberalartseducation"){
     exchange_port = 20000; /* Default text based port */
     if(true == test_mode) {
       exchange_hostname = "test-exch-" + team_name;
