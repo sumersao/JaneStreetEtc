@@ -290,7 +290,7 @@ int main(int argc, char *argv[])
      sell.push_back(string("SELL"));
      sell.push_back(to_string(int(fairval + 1 + .5)));
      sell.push_back(to_string(99999));
-     conn.send_to_exchange(join(" ", buy));
+     conn.send_to_exchange(join(" ", sell));
      for(int i = 0; i < sell.size(); i++ ){ 
        cout << sell[i] << " ";
      }
