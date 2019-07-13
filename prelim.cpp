@@ -187,7 +187,7 @@ int main(int argc, char *argv[])
         //type is res[1]
         //let's go through buy and buy all of the values less than 100
         int numtobuy = 0;
-        for(int i = 3, i < res.size(); i++) {
+        for(int i = 3; i < res.size(); i++) {
           string cur = res[i];
           replace(cur.begin(), cur.end(), ':', ' ');
           vector<int> array;
