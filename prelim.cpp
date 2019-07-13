@@ -300,9 +300,14 @@ int main(int argc, char *argv[])
         fairval = int(real_fair_value_map[res[1]]);
       }
 
+      cout << "REAL VALUE OF VALBZ IS " << real_fair_value_map["VALBZ"] << endl;
+      cout << "REAL VALUE OF VALE IS " << real_fair_value_map["VALE"] << endl;
+      cout << "MARKET VALUE OF VALBZ IS " << fair_value_map["VALBZ"] << endl;
+      cout << "MARKET VALUE OF VALE IS " << fair_value_map["VALE"] << endl;
+      cout << "REAL VALUE OF XLF IS " << real_fair_value_map["XLF"] << endl;
       cout << lastFV[curind] << " " << fairval << endl;
 
-      if(abs(fairval - lastFV[curind]) > int(fairval*0.0015)) {
+      if(abs(fairval - lastFV[curind]) > 5) {
         //cancel our last two orders
         conn.send_to_exchange("CANCEL " + to_string(lastids[curind].first));
         conn.send_to_exchange("CANCEL " + to_string(lastids[curind].second));
@@ -316,7 +321,7 @@ int main(int argc, char *argv[])
         buy.push_back(res[1]);
         buy.push_back(string("BUY"));
         buy.push_back(to_string(int(fairval - 1)));
-        buy.push_back(to_string(int(0.3*amt[curind])));
+        buy.push_back(to_string(3));
         conn.send_to_exchange(join(" ", buy));
 
         for(int i = 0; i < buy.size(); i++){
