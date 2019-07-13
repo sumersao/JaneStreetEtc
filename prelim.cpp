@@ -38,7 +38,7 @@ private:
     1 = slower
     2 = empty
   */
-  static int const test_exchange_index = 0;
+  static int const test_exchange_index = 1;
 public:
   std::string team_name;
   std::string exchange_hostname;
