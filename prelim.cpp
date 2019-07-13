@@ -331,7 +331,7 @@ int main(int argc, char *argv[])
         buy.push_back(to_string(ids+1));
         buy.push_back(res[1]);
         buy.push_back(string("BUY"));
-        buy.push_back(to_string(int(fairval - 1 + .5)));
+        buy.push_back(to_string(int(fairval - 1)));
         buy.push_back(to_string(amt[curind]));
         conn.send_to_exchange(join(" ", buy));
 
@@ -345,7 +345,7 @@ int main(int argc, char *argv[])
         sell.push_back(to_string(ids+2));
         sell.push_back(res[1]);
         sell.push_back(string("SELL"));
-        sell.push_back(to_string(int(fairval + 1 + .5)));
+        sell.push_back(to_string(int(fairval + 1)));
         sell.push_back(to_string(amt[curind]));
         conn.send_to_exchange(join(" ", sell));
 
@@ -353,6 +353,12 @@ int main(int argc, char *argv[])
           cout << sell[i] << " ";
         }
         cout << endl;
+
+        for(int i = 0; i < res.size(); i++){
+          cout << res[i] << " ";
+        }
+        cout << endl;
+
 
 
         lastFV[curind] = fairval;
