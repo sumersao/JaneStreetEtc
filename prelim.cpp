@@ -293,7 +293,7 @@ int main(int argc, char *argv[])
         bookreads[curind] == 0;
       }
 
-      if (bookreads[curind] == 0) {
+      if (fair_value_map[res[1]] == 0) {
         // SETS INTIAL VALUE
         fair_value_map[res[1]] = (temp2 + temp1)/2.0;
       } else {
@@ -321,11 +321,11 @@ int main(int argc, char *argv[])
         fairval = int(real_fair_value_map[res[1]]);
       }
 
-      cout << "REAL VALUE OF VALBZ IS " << real_fair_value_map["VALBZ"] << endl;
-      cout << "REAL VALUE OF VALE IS " << real_fair_value_map["VALE"] << endl;
-      cout << "MARKET VALUE OF VALBZ IS " << fair_value_map["VALBZ"] << endl;
-      cout << "MARKET VALUE OF VALE IS " << fair_value_map["VALE"] << endl;
-      cout << "REAL VALUE OF XLF IS " << real_fair_value_map["XLF"] << endl;
+      // cout << "REAL VALUE OF VALBZ IS " << real_fair_value_map["VALBZ"] << endl;
+      // cout << "REAL VALUE OF VALE IS " << real_fair_value_map["VALE"] << endl;
+      // cout << "MARKET VALUE OF VALBZ IS " << fair_value_map["VALBZ"] << endl;
+      // cout << "MARKET VALUE OF VALE IS " << fair_value_map["VALE"] << endl;
+      // cout << "REAL VALUE OF XLF IS " << real_fair_value_map["XLF"] << endl;
       cout << lastFV[curind] << " " << fairval << endl;
 
       if(abs(fairval - lastFV[curind]) > 3) {
