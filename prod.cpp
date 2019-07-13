@@ -153,7 +153,7 @@ int main(int argc, char *argv[])
   //securities = {"BOND", "VALBZ", "VALE", "GS", "MS", "WFC", "XLF"};
 
     // Be very careful with this boolean! It switches between test and prod
-    bool test_mode = false;
+    bool test_mode = true;
     Configuration config(test_mode);
     Connection conn(config);
 
