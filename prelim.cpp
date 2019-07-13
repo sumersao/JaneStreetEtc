@@ -194,7 +194,6 @@ int main(int argc, char *argv[])
         cout << endl;
 
         //find location of sell
-
         int locsell = 0;
         for(int i = 0; i < res.size(); i++){
           if(res[i] == "SELL") {
@@ -202,6 +201,8 @@ int main(int argc, char *argv[])
             break;
           }
         }
+
+        cout << locsell << endl;
 
         //here is buy
         for(int i = 3; i < locsell; i++) {
@@ -212,11 +213,22 @@ int main(int argc, char *argv[])
           int temp;
           while (ss >> temp) array.push_back(temp);
 
-          cout << array[0] << " " << array[1] << endl;
+          //first is price, second is amount
+          if(array[0] < 1000) {
+            vector<string> buy;
+            buy.push_back(string("ADD"));
+            buy.push_back(string(ids));
+            buy.push_back(res[1]);
+            buy.push_back(string("BUY"));
+            buy.push_back(string(array[0]));
+            buy.push_back(string(array[1]));
+            
+          }
+
         }
 
         //here is sell
-        for(int i = locsell; i < res.size(); i++) {
+        for(int i = locsell+1; i < res.size(); i++) {
           string cur = res[i];
           replace(cur.begin(), cur.end(), ':', ' ');
           vector<int> array;
@@ -224,7 +236,7 @@ int main(int argc, char *argv[])
           int temp;
           while (ss >> temp) array.push_back(temp);
 
-          cout << array[0] << " " << array[1] << endl;
+
         }
 
       }
