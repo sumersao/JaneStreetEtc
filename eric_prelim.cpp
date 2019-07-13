@@ -317,6 +317,10 @@ int main(int argc, char *argv[])
       if (res[1] == "XLF" || res[1] == "VALBZ" || res[1] == "VALE") {
         fairval = real_fair_value_map[res[1]];
       }
+      cout << "REAL VALUE OF VALBZ IS " << real_fair_value_map["VALBZ"] << endl;
+      cout << "REAL VALUE OF VALE IS " << real_fair_value_map["VALE"] << endl;
+      cout << "MARKET VALUE OF VALBZ IS " << fair_value_map["VALBZ"] << endl;
+      cout << "MARKET VALUE OF VALE IS " << fair_value_map["VALE"] << endl;
 
       cout << lastFV[curind] << " " << fairval << endl;
 
