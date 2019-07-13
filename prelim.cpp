@@ -277,7 +277,7 @@ int main(int argc, char *argv[])
       buy.push_back(res[1]);
       buy.push_back(string("BUY"));
       buy.push_back(to_string(int(fairval - 1 + .5)));
-      buy.push_back(to_string(99999));
+      buy.push_back(to_string(9));
       conn.send_to_exchange(join(" ", buy));
       for(int i = 0; i < buy.size(); i++ ){ 
        cout << buy[i] << " ";
@@ -291,7 +291,7 @@ int main(int argc, char *argv[])
      sell.push_back(res[1]);
      sell.push_back(string("SELL"));
      sell.push_back(to_string(int(fairval + 1 + .5)));
-     sell.push_back(to_string(99999));
+     sell.push_back(to_string(9));
      conn.send_to_exchange(join(" ", sell));
      for(int i = 0; i < sell.size(); i++ ){ 
        cout << sell[i] << " ";
