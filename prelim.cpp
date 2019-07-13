@@ -237,6 +237,7 @@ int main(int argc, char *argv[])
         cout << res[i] << " ";
       }
       cout << endl;
+
     if(curline.find("BOOK") == 0) {
         //type is res[1]"
         //let's go through buy and buy all of the values less than 100
@@ -287,8 +288,8 @@ int main(int argc, char *argv[])
         // SETS INTIAL VALUE
         fair_value_map[res[1]] = (temp2 + temp1)/2.0;
       } else {
-        double smoothing = 2.0 / (10.0 + 1.0);
-        fair_value_map[res[1]] = (temp1 + temp2)/2.0 * (smoothing/(1.0 + 10.0)) + fair_value_map[res[1]] * (smoothing/(1.0 - 10.0));
+        // double smoothing = 2.0 / (10.0 + 1.0);
+        fair_value_map[res[1]] = (temp1 + temp2)/2.0 * (0.7) + fair_value_map[res[1]] * (1 - 0.7);
       }
 
 
