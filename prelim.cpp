@@ -214,15 +214,16 @@ int main(int argc, char *argv[])
           while (ss >> temp) array.push_back(temp);
 
           //first is price, second is amount
-          if(array[0] < 1000) {
-            vector<string> buy;
-            buy.push_back(string("ADD"));
-            buy.push_back(string(ids));
-            buy.push_back(res[1]);
-            buy.push_back(string("BUY"));
-            buy.push_back(string(array[0]));
-            buy.push_back(string(array[1]));
-            
+          if(array[0] > 1000) {
+            vector<string> sell;
+            sell.push_back(string("ADD"));
+            sell.push_back(string(ids));
+            sell.push_back(res[1]);
+            sell.push_back(string("SELL"));
+            sell.push_back(string(array[0]));
+            sell.push_back(string(array[1]));
+            conn.send_to_exchange(join(" ", sell));
+            ids++;
           }
 
         }
@@ -235,6 +236,18 @@ int main(int argc, char *argv[])
           stringstream ss(cur);
           int temp;
           while (ss >> temp) array.push_back(temp);
+
+          if(array[0] < 1000){
+            vector<string> buy;
+            buy.push_back(string("ADD"));
+            buy.push_back(string(ids));
+            buy.push_back(res[1]);
+            buy.push_back(string("BUY"));
+            buy.push_back(string(array[0]));
+            buy.push_back(string(array[1]));
+            conn.send_to_exchange(join(" ", buy));
+            ids++;
+          }
 
 
         }
