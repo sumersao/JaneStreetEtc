@@ -38,7 +38,7 @@ private:
     1 = slower
     2 = empty
   */
-  static int const test_exchange_index = 1;
+  static int const test_exchange_index = 0;
 public:
   std::string team_name;
   std::string exchange_hostname;
@@ -198,7 +198,7 @@ int main(int argc, char *argv[])
   cout << "The exchange replied: " << line << endl;
 
   int ids = 1;
-
+  int count = 0;
     //start our trading here
   while(1) {
       //read from the exchange
@@ -266,7 +266,11 @@ int main(int argc, char *argv[])
 
       double fairval = fair_value_map[res[1]];  
 
+
+      if(count %10 == 0){ 
+
         //cancel our last two orders
+      
       conn.send_to_exchange("CANCEL " + to_string(lastids[curind].first));
       conn.send_to_exchange("CANCEL " + to_string(lastids[curind].second));
 
@@ -302,6 +306,8 @@ int main(int argc, char *argv[])
      lastids[curind] = make_pair(ids+1, ids+2);
      ids+=2;
    }
+     count++;
+   }
    else if(curline.find("TRADE") == 0) {
 
    }
@@ -311,6 +317,7 @@ int main(int argc, char *argv[])
    else{
 
    }
+
  }
 
  return 0;
