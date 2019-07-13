@@ -299,7 +299,7 @@ int main(int argc, char *argv[])
 
       cout << lastFV[curind] << " " << fairval << endl;
 
-      if(abs(fairval - lastFV[curind]) > 1) {
+      if(abs(fairval - lastFV[curind]) > int(fairval*0.0015)) {
         //cancel our last two orders
 
         
