@@ -213,7 +213,7 @@ int main(int argc, char *argv[])
   cout << "The exchange replied: " << line << endl;
 
   int ids = 1;
-  int Nsize = 10;
+  int Nsize = 100;
     //start our trading here
   while(1) {
       //read from the exchange
@@ -226,6 +226,10 @@ int main(int argc, char *argv[])
     }
     // cout << endl;
 
+    for(int i = 0; i < res.size(); i++){
+        cout << res[i] << " ";
+      }
+      cout << endl;
 
     if(curline.find("BOOK") == 0) {
       //type is res[1]"
@@ -270,7 +274,7 @@ int main(int argc, char *argv[])
 
       if (bookreads[curind] == 0) {
         // SETS INTIAL VALUE
-        fair_value_map[res[1]] = (temp2 + temp1)/2.0;
+        fair_value_map[res[1]] = (temp2 + temp1)/2.0 + 20;
       } else {
         double val = bookreads[curind];
         double smoothing = 2.0 / (val + 1.0);
@@ -298,10 +302,12 @@ int main(int argc, char *argv[])
       if(abs(fairval - lastFV[curind]) > 1) {
         //cancel our last two orders
 
-        cout << "did a thing " << endl;
+        
 
         conn.send_to_exchange("CANCEL " + to_string(lastids[curind].first));
         conn.send_to_exchange("CANCEL " + to_string(lastids[curind].second));
+
+        cout << lastids[curind].first << " " << lastids[curind].second << endl;
 
         //update orders
         vector<string> buy;
@@ -352,10 +358,7 @@ int main(int argc, char *argv[])
 
     }
     else{
-          for(int i = 0; i < res.size(); i++){
-        cout << res[i] << " ";
-      }
-      cout << endl;
+          
 
     }
 
