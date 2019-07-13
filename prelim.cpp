@@ -187,11 +187,17 @@ int main(int argc, char *argv[])
         //type is res[1]
         //let's go through buy and buy all of the values less than 100
         int numtobuy = 0;
+
         for(int i = 0; i < res.size(); i++) {
           cout << res[i] << " ";
         }
         cout << endl;
-        for(int i = 3; i < res.size(); i++) {
+
+        //find location of sell
+        int locsell = find(res.begin(), res.end(), "SELL");
+
+        //here is buy
+        for(int i = 3; i < locsell; i++) {
           string cur = res[i];
           replace(cur.begin(), cur.end(), ':', ' ');
           vector<int> array;
@@ -200,8 +206,20 @@ int main(int argc, char *argv[])
           while (ss >> temp) array.push_back(temp);
 
           cout << array[0] << " " << array[1] << endl;
-
         }
+
+        //here is sell
+        for(int i = locsell; i < res.size(); i++) {
+          string cur = res[i];
+          replace(cur.begin(), cur.end(), ':', ' ');
+          vector<int> array;
+          stringstream ss(cur);
+          int temp;
+          while (ss >> temp) array.push_back(temp);
+
+          cout << array[0] << " " << array[1] << endl;
+        }
+
       }
       else if(curline.find("TRADE") == 0) {
 
