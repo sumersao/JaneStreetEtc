@@ -213,7 +213,7 @@ int main(int argc, char *argv[])
   cout << "The exchange replied: " << line << endl;
 
   int ids = 1;
-  int Nsize = 100;
+  int Nsize = 10;
     //start our trading here
   while(1) {
       //read from the exchange
