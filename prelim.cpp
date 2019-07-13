@@ -171,129 +171,144 @@ int main(int argc, char *argv[])
   }
 
     // Be very careful with this boolean! It switches between test and prod
-    bool test_mode = true;
-    Configuration config(test_mode);
-    Connection conn(config);
+  bool test_mode = true;
+  Configuration config(test_mode);
+  Connection conn(config);
 
-    map<string, double> fair_value_map;
-    fair_value_map["VALBZ"] = 0.0;
-    fair_value_map["VALE"] = 0.0;
-    fair_value_map["GS"] = 0.0;
-    fair_value_map["MS"] = 0.0;
-    fair_value_map["WFC"] = 0.0;
-    fair_value_map["XLF"] = 0.0;
+  map<string, double> fair_value_map;
+  fair_value_map["VALBZ"] = 0.0;
+  fair_value_map["VALE"] = 0.0;
+  fair_value_map["GS"] = 0.0;
+  fair_value_map["MS"] = 0.0;
+  fair_value_map["WFC"] = 0.0;
+  fair_value_map["XLF"] = 0.0;
 
-    std::vector<std::string> data;
-    data.push_back(std::string("HELLO"));
-    data.push_back(config.team_name);
+  std::vector<std::string> data;
+  data.push_back(std::string("HELLO"));
+  data.push_back(config.team_name);
     /*
       A common mistake people make is to conn.send_to_exchange() > 1
       time for every conn.read_from_exchange() response.
       Since many write messages generate marketdata, this will cause an
       exponential explosion in pending messages. Please, don't do that!
     */
-    conn.send_to_exchange(join(" ", data));
-    string line = conn.read_from_exchange();
-    cout << "The exchange replied: " << line << endl;
+  conn.send_to_exchange(join(" ", data));
+  string line = conn.read_from_exchange();
+  cout << "The exchange replied: " << line << endl;
 
-    int ids = 1;
+  int ids = 1;
 
     //start our trading here
-    while(1) {
+  while(1) {
       //read from the exchange
-      string curline = conn.read_from_exchange();
+    string curline = conn.read_from_exchange();
 
-      vector<string> res;
-      istringstream iss(curline);
-      for(string curline; iss >> curline;) {
-        res.push_back(curline);
-      }
-
-      if(curline.find("BOOK") == 0) {
-        //type is res[1]"
-        if(res[1] != "BOND") continue;
-
-        int curind = getind(securids, res[1]);
-
-        //get fairval
-        double fairval;
-
-        //let's go through buy and buy all of the values less than 100
-        for(int i = 0; i < res.size(); i++) {
-          cout << res[i] << " ";
-        }
-        cout << endl;
-
-        //find location of sell
-        int locsell = getind(res, "SELL");
-
-
-
-        //here is buy
-        for(int i = 3; i < locsell; i++) {
-          string cur = res[i];
-          replace(cur.begin(), cur.end(), ':', ' ');
-          vector<int> array;
-          stringstream ss(cur);
-          int temp;
-          while (ss >> temp) array.push_back(temp);
-
-        }
-
-        //here is sell
-        for(int i = locsell+1; i < res.size(); i++) {
-          string cur = res[i];
-          replace(cur.begin(), cur.end(), ':', ' ');
-          vector<int> array;
-          stringstream ss(cur);
-          int temp;
-          while (ss >> temp) array.push_back(temp);
-
-        }
-        //cancel our last two orders
-        conn.send_to_exchange("CANCEL " + to_string(lastids[curind].first));
-        conn.send_to_exchange("CANCEL " + to_string(lastids[curind].second));
-
-        //update orders
-        vector<string> buy;
-        buy.push_back(string("ADD"));
-        buy.push_back(to_string(ids+1));
-        buy.push_back(res[1]);
-        buy.push_back(string("BUY"));
-        buy.push_back(to_string(int(fairval - 1 + .5)));
-        buy.push_back(to_string(99999));
-        conn.send_to_exchange(join(" ", buy));
-        for(int i = 0; i < buy.size(); i++ ){ 
-           cout << buy[i] << " ";
-        }
-        cout << endl;
-
-        vector<string> sell;
-        sell.push_back(string("ADD"));
-        sell.push_back(to_string(ids+2));
-        sell.push_back(res[1]);
-        sell.push_back(string("SELL"));
-        sell.push_back(to_string(int(fairval + 1 + .5)));
-        sell.push_back(to_string(99999));
-        conn.send_to_exchange(join(" ", buy));
-        for(int i = 0; i < sell.size(); i++ ){ 
-           cout << sell[i] << " ";
-        }
-        cout << endl;
-
-        bars[curind] = make_pair(ids+1, ids+2);
-        ids+=2;
-      }
-      else if(curline.find("TRADE") == 0) {
-
-      }
-      else if(curline.find("OPEN") == 0) {
-
-      }
-      else{
-
-      }
+    vector<string> res;
+    istringstream iss(curline);
+    for(string curline; iss >> curline;) {
+      res.push_back(curline);
     }
 
-    return 0;
+    if(curline.find("BOOK") == 0) {
+        //type is res[1]"
+        //let's go through buy and buy all of the values less than 100
+      int numtobuy = 0;
+
+      int curind = getind(securids, res[1]);
+
+        //let's go through buy and buy all of the values less than 100
+      for(int i = 0; i < res.size(); i++) {
+        cout << res[i] << " ";
+      }
+      cout << endl;
+
+        //find location of sell
+      int locsell = getind(res, "SELL");
+
+        // FAIR VALUE CALCULATION
+      double temp1 = 0;
+      double temp2 = 0;
+        //here is buy
+      for(int i = 3; i < locsell; i++) {
+        string cur = res[i];
+        replace(cur.begin(), cur.end(), ':', ' ');
+        vector<int> array;
+        stringstream ss(cur);
+        int temp;
+        while (ss >> temp) array.push_back(temp);
+
+
+        temp1 = array[0];
+        break;
+      }
+
+        //here is sell
+      for(int i = locsell+1; i < res.size(); i++) {
+        string cur = res[i];
+        replace(cur.begin(), cur.end(), ':', ' ');
+        vector<int> array;
+        stringstream ss(cur);
+        int temp;
+        while (ss >> temp) array.push_back(temp);
+
+        temp2 = array[0];
+        break;
+
+      }
+
+      if (temp1 != 0 && temp2 != 0) {
+        fair_value_map[res[1]] = (temp2 + temp1)/2;
+        cout << "FAIR VALUE OF << " << res[1] << " IS " << (temp2 + temp1)/2 << endl;
+      }
+
+      double fairval = fair_value_map[res[1]];  
+
+        //cancel our last two orders
+      conn.send_to_exchange("CANCEL " + to_string(lastids[curind].first));
+      conn.send_to_exchange("CANCEL " + to_string(lastids[curind].second));
+
+        //update orders
+      vector<string> buy;
+      buy.push_back(string("ADD"));
+      buy.push_back(to_string(ids+1));
+      buy.push_back(res[1]);
+      buy.push_back(string("BUY"));
+      buy.push_back(to_string(int(fairval - 1 + .5)));
+      buy.push_back(to_string(99999));
+      conn.send_to_exchange(join(" ", buy));
+      for(int i = 0; i < buy.size(); i++ ){ 
+       cout << buy[i] << " ";
+     }
+     cout << endl;
+
+
+     vector<string> sell;
+     sell.push_back(string("ADD"));
+     sell.push_back(to_string(ids+2));
+     sell.push_back(res[1]);
+     sell.push_back(string("SELL"));
+     sell.push_back(to_string(int(fairval + 1 + .5)));
+     sell.push_back(to_string(99999));
+     conn.send_to_exchange(join(" ", buy));
+     for(int i = 0; i < sell.size(); i++ ){ 
+       cout << sell[i] << " ";
+     }
+
+     cout << endl;
+
+     bars[curind] = make_pair(ids+1, ids+2);
+     ids+=2;
+   }
+   else if(curline.find("TRADE") == 0) {
+
+   }
+   else if(curline.find("OPEN") == 0) {
+
+   }
+   else{
+
+   }
+ }
+
+ return 0;
 }

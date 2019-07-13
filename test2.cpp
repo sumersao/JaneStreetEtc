@@ -37,7 +37,7 @@ private:
     1 = slower
     2 = empty
   */
-  static int const test_exchange_index = 0;
+  static int const test_exchange_index = 1;
 public:
   std::string team_name;
   std::string exchange_hostname;
@@ -175,7 +175,7 @@ int main(int argc, char *argv[])
     buy.push_back(string("1000"));
     buy.push_back(string("BOND"));
     buy.push_back(string("BUY"));
-    buy.push_back(string("995"));
+    buy.push_back(string("999"));
     buy.push_back(string("99"));
     conn.send_to_exchange(join(" ", buy));
 
@@ -184,13 +184,15 @@ int main(int argc, char *argv[])
     sell.push_back(string("1001"));
     sell.push_back(string("BOND"));
     sell.push_back(string("SELL"));
-    sell.push_back(string("1005"));
+    sell.push_back(string("1001"));
     sell.push_back(string("99"));
     conn.send_to_exchange(join(" ", sell));
 
     while(true) {
       string line = conn.read_from_exchange();
-      //cout << "The exchange replied: " << line << endl;
+      if( (line.find("XLF") != std::string::npos || line.find("GS") != std::string::npos || line.find("MS") != std::string::npos
+        || line.find("WFC") != std::string::npos) && line.find("TRADE") != std::string::npos)
+        cout << "The exchange replied: " << line << endl;
     }
 
     //start our trading here
