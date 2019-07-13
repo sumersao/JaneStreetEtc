@@ -157,6 +157,14 @@ int main(int argc, char *argv[])
     Configuration config(test_mode);
     Connection conn(config);
 
+    map fair_value_map<string, double>;
+    fair_value_map.insert("VALBZ", 0.0);
+    fair_value_map.insert("VALE", 0.0);
+    fair_value_map.insert("GS", 0.0);
+    fair_value_map.insert("MS", 0.0);
+    fair_value_map.insert("WFC", 0.0);
+    fair_value_map.insert("XLF", 0.0);
+
     std::vector<std::string> data;
     data.push_back(std::string("HELLO"));
     data.push_back(config.team_name);
