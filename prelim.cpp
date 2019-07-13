@@ -278,7 +278,7 @@ int main(int argc, char *argv[])
       } else {
         double val = bookreads[curind];
         double smoothing = 2.0 / (val + 1.0);
-        fair_value_map[res[1]] = (temp1 + temp2)/2.0 * smoothing + fair_value_map[res[1]] * (1 - smoothing/(val + 1.0));
+        fair_value_map[res[1]] = (temp1 + temp2)/2.0 * smoothing + fair_value_map[res[1]] * (1 - smoothing);
       }
 
 
