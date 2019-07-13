@@ -38,7 +38,7 @@ private:
     1 = slower
     2 = empty
   */
-  static int const test_exchange_index = 0;
+  static int const test_exchange_index = 1;
 public:
   std::string team_name;
   std::string exchange_hostname;
@@ -229,12 +229,19 @@ int main(int argc, char *argv[])
     istringstream iss(curline);
     for(string curline; iss >> curline;) {
       res.push_back(curline);
+      // cout << curline << " ";
     }
+    // cout << endl;
 
     if(curline.find("BOOK") == 0) {
         //type is res[1]"
         //let's go through buy and buy all of the values less than 100
 
+
+      for(int i = 0; i < res.size(); i++){
+        cout << res[i] << " ";
+      }
+      cout << endl;
       int numtobuy = 0;
 
       int curind = getind(securids, res[1]);
@@ -301,7 +308,7 @@ int main(int argc, char *argv[])
 
       cout << lastFV[curind] << " " << fairval << endl;
 
-      if(abs(fairval - lastFV[curind]) < 1e-7) {
+      if(abs(fairval - lastFV[curind]) > 1e-7) {
         //cancel our last two orders
         conn.send_to_exchange("CANCEL " + to_string(lastids[curind].first));
         conn.send_to_exchange("CANCEL " + to_string(lastids[curind].second));
