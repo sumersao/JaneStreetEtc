@@ -38,7 +38,7 @@ private:
     1 = slower
     2 = empty
   */
-  static int const test_exchange_index = 0;
+  static int const test_exchange_index = 1;
 public:
   std::string team_name;
   std::string exchange_hostname;
@@ -167,9 +167,11 @@ int main(int argc, char *argv[])
 
   vector<pair<int, int> > lastids;
   vector<double> lastFV;
+  vector<double> bookreads;
   for(int i = 0; i < 7; i++){
     lastids.push_back(make_pair(0, 0));
     lastFV.push_back(0.0);
+    bookreads.push_back(0);
   }
 
   vector<int> amt;
@@ -211,26 +213,8 @@ int main(int argc, char *argv[])
   cout << "The exchange replied: " << line << endl;
 
   int ids = 1;
+  int Nsize = 10;
     //start our trading here
-
-  // vector<string> buy;
-  //   buy.push_back(string("ADD"));
-  //   buy.push_back(string("1000"));
-  //   buy.push_back(string("BOND"));
-  //   buy.push_back(string("BUY"));
-  //   buy.push_back(string("999"));
-  //   buy.push_back(string("99"));
-  //   conn.send_to_exchange(join(" ", buy));
-
-  //   vector<string> sell;
-  //   sell.push_back(string("ADD"));
-  //   sell.push_back(string("1001"));
-  //   sell.push_back(string("BOND"));
-  //   sell.push_back(string("SELL"));
-  //   sell.push_back(string("1001"));
-  //   sell.push_back(string("99"));
-  //   conn.send_to_exchange(join(" ", sell));
-  int bookreads = 0;
   while(1) {
       //read from the exchange
     string curline = conn.read_from_exchange();
@@ -244,19 +228,9 @@ int main(int argc, char *argv[])
 
 
     if(curline.find("BOOK") == 0) {
-      
-        //type is res[1]"
-        //let's go through buy and buy all of the values less than 100
-
-
-      
-      int numtobuy = 0;
+      //type is res[1]"
 
       int curind = getind(securids, res[1]);
-
-        //let's go through buy and buy all of the values less than 100
-      
-
         //find location of sell
       int locsell = getind(res, "SELL");
 
@@ -290,15 +264,15 @@ int main(int argc, char *argv[])
 
       }
 
-      if(bookreads%10 == 0){
-        bookreads == 0;
+      if(bookreads[curind]%Nsize == 0){
+        bookreads[curind] == 0;
       }
 
-      if (bookreads == 0) {
+      if (bookreads[curind] == 0) {
         // SETS INTIAL VALUE
         fair_value_map[res[1]] = (temp2 + temp1)/2.0;
       } else {
-        double val = bookreads;
+        double val = bookreads[curind];
         double smoothing = 2.0 / (val + 1.0);
         fair_value_map[res[1]] = (temp1 + temp2)/2.0 * (smoothing/(1.0 + val)) + fair_value_map[res[1]] * (1 - smoothing/(val + 1.0));
       }
