@@ -201,23 +201,23 @@ int main(int argc, char *argv[])
   int count = 0;
     //start our trading here
 
-  vector<string> buy;
-    buy.push_back(string("ADD"));
-    buy.push_back(string("1000"));
-    buy.push_back(string("BOND"));
-    buy.push_back(string("BUY"));
-    buy.push_back(string("999"));
-    buy.push_back(string("99"));
-    conn.send_to_exchange(join(" ", buy));
+  // vector<string> buy;
+  //   buy.push_back(string("ADD"));
+  //   buy.push_back(string("1000"));
+  //   buy.push_back(string("BOND"));
+  //   buy.push_back(string("BUY"));
+  //   buy.push_back(string("999"));
+  //   buy.push_back(string("99"));
+  //   conn.send_to_exchange(join(" ", buy));
 
-    vector<string> sell;
-    sell.push_back(string("ADD"));
-    sell.push_back(string("1001"));
-    sell.push_back(string("BOND"));
-    sell.push_back(string("SELL"));
-    sell.push_back(string("1001"));
-    sell.push_back(string("99"));
-    conn.send_to_exchange(join(" ", sell));
+  //   vector<string> sell;
+  //   sell.push_back(string("ADD"));
+  //   sell.push_back(string("1001"));
+  //   sell.push_back(string("BOND"));
+  //   sell.push_back(string("SELL"));
+  //   sell.push_back(string("1001"));
+  //   sell.push_back(string("99"));
+  //   conn.send_to_exchange(join(" ", sell));
   while(1) {
       //read from the exchange
     string curline = conn.read_from_exchange();
@@ -234,7 +234,7 @@ int main(int argc, char *argv[])
 
     if(curline.find("BOOK") == 0) {
         //type is res[1]"
-      if(res[1] == "BOND") continue;
+      // if(res[1] == "BOND") continue;
         //let's go through buy and buy all of the values less than 100
       int numtobuy = 0;
 
