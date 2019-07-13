@@ -165,7 +165,7 @@ int main(int argc, char *argv[])
   securids.push_back("WFC");
   securids.push_back("XLF");
 
-  vector<pair> lastids(7);
+  vector<pair<int, int> > lastids(7);
   for(int i = 0; i < lastids.size(); i++){
     lastids.push_back(make_pair(0, 0));
   }
@@ -296,7 +296,7 @@ int main(int argc, char *argv[])
 
      cout << endl;
 
-     bars[curind] = make_pair(ids+1, ids+2);
+     lastids[curind] = make_pair(ids+1, ids+2);
      ids+=2;
    }
    else if(curline.find("TRADE") == 0) {
