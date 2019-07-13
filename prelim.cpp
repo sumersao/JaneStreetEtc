@@ -178,7 +178,7 @@ int main(int argc, char *argv[])
 
       vector<string> res;
       istringstream iss(curline);
-      for(string a: iss > s) {
+      for(string a; iss >> s;) {
         res.push_back(a);
         cout << res[0] << endl;
       }
