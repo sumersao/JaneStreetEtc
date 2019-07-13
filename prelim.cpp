@@ -200,23 +200,41 @@ int main(int argc, char *argv[])
   int ids = 1;
   int count = 0;
     //start our trading here
+
+  vector<string> buy;
+    buy.push_back(string("ADD"));
+    buy.push_back(string("1000"));
+    buy.push_back(string("BOND"));
+    buy.push_back(string("BUY"));
+    buy.push_back(string("999"));
+    buy.push_back(string("99"));
+    conn.send_to_exchange(join(" ", buy));
+
+    vector<string> sell;
+    sell.push_back(string("ADD"));
+    sell.push_back(string("1001"));
+    sell.push_back(string("BOND"));
+    sell.push_back(string("SELL"));
+    sell.push_back(string("1001"));
+    sell.push_back(string("99"));
+    conn.send_to_exchange(join(" ", sell));
   while(1) {
       //read from the exchange
     string curline = conn.read_from_exchange();
-
     vector<string> res;
     istringstream iss(curline);
     for(string curline; iss >> curline;) {
       res.push_back(curline);
     }
 
-    for(int i = 0; i < res.size(); i++) {
-        cout << res[i] << " ";
-      }
-      cout << endl;
+    // for(int i = 0; i < res.size(); i++) {
+    //     cout << res[i] << " ";
+    //   }
+    //   cout << endl;
 
     if(curline.find("BOOK") == 0) {
         //type is res[1]"
+      if(res[1] == "BOND") continue;
         //let's go through buy and buy all of the values less than 100
       int numtobuy = 0;
 
@@ -261,7 +279,7 @@ int main(int argc, char *argv[])
 
       if (temp1 != 0 && temp2 != 0) {
         fair_value_map[res[1]] = (temp2 + temp1)/2;
-        cout << "FAIR VALUE OF << " << res[1] << " IS " << (temp2 + temp1)/2 << endl;
+        // cout << "FAIR VALUE OF << " << res[1] << " IS " << (temp2 + temp1)/2 << endl;
       }
 
       double fairval = fair_value_map[res[1]];  
@@ -283,10 +301,10 @@ int main(int argc, char *argv[])
       buy.push_back(to_string(int(fairval - 1 + .5)));
       buy.push_back(to_string(9));
       conn.send_to_exchange(join(" ", buy));
-      for(int i = 0; i < buy.size(); i++ ){ 
-       cout << buy[i] << " ";
-     }
-     cout << endl;
+     //  for(int i = 0; i < buy.size(); i++ ){ 
+     //   cout << buy[i] << " ";
+     // }
+     // cout << endl;
 
 
      vector<string> sell;
@@ -297,11 +315,11 @@ int main(int argc, char *argv[])
      sell.push_back(to_string(int(fairval + 1 + .5)));
      sell.push_back(to_string(9));
      conn.send_to_exchange(join(" ", sell));
-     for(int i = 0; i < sell.size(); i++ ){ 
-       cout << sell[i] << " ";
-     }
+     // for(int i = 0; i < sell.size(); i++ ){ 
+     //   cout << sell[i] << " ";
+     // }
 
-     cout << endl;
+     // cout << endl;
 
      lastids[curind] = make_pair(ids+1, ids+2);
      ids+=2;
