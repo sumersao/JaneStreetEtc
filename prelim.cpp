@@ -227,7 +227,7 @@ int main(int argc, char *argv[])
   cout << "The exchange replied: " << line << endl;
 
   int ids = 1;
-  int Nsize = 8;
+  int Nsize = 7;
   double smoother = 2.0/(1.0 + 1.0*Nsize);
     //start our trading here
   while(1) {
@@ -350,8 +350,8 @@ int main(int argc, char *argv[])
         buy.push_back(to_string(ids+1));
         buy.push_back(res[1]);
         buy.push_back(string("BUY"));
-        buy.push_back(to_string(int(fairval - 6)));
-        buy.push_back(to_string(4));
+        buy.push_back(to_string(int(fairval - 7)));
+        buy.push_back(to_string(3));
         conn.send_to_exchange(join(" ", buy));
 
         // for(int i = 0; i < buy.size(); i++){
@@ -364,8 +364,8 @@ int main(int argc, char *argv[])
         sell.push_back(to_string(ids+2));
         sell.push_back(res[1]);
         sell.push_back(string("SELL"));
-        sell.push_back(to_string(int(fairval + 6)));
-        sell.push_back(to_string(4));
+        sell.push_back(to_string(int(fairval + 7)));
+        sell.push_back(to_string(3));
         conn.send_to_exchange(join(" ", sell));
 
         // for(int i = 0; i < sell.size(); i++){
