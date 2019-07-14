@@ -340,6 +340,7 @@ int main(int argc, char *argv[])
       }
       variance /= past_vals.size();
       double std_dev = sqrt(variance);
+      cout << "STD DEV OF " << bounds[res[1]] << " IS " << std_dev << endl;
 
 
       // cout << "REAL VALUE OF VALBZ IS " << real_fair_value_map["VALBZ"] << endl;
