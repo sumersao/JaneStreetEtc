@@ -190,7 +190,13 @@ int main(int argc, char *argv[])
   map<string, double> real_fair_value_map;
   real_fair_value_map["BOND"] = 1000;
 
-  map<string, vector<int>> bounds;
+  map<string, int> bounds;
+  bounds["XLF"] = 10;
+  bounds["VALE"] = 3;
+  bounds["WFC"] = 1;
+  bounds["GS"] = 1;
+  bounds["MS"] = 1;
+  bounds["VALBZ"] = 1;
 
   std::vector<std::string> data;
   data.push_back(std::string("HELLO"));
@@ -324,23 +330,7 @@ int main(int argc, char *argv[])
         fairval = real_fair_value_map[res[1]];
       }
 
-      bounds[res[1]].push_back(fairval);
-      if (bounds[res[1]].size () > 20) {
-        bounds[res[1]].erase(bounds[res[1]].begin());
-      }
-      vector<int> past_vals = bounds[res[1]];
-      double variance = 0;
-      double mean = 0;
-      for (int i = 0; i < past_vals.size(); i++) {
-        mean += past_vals[i];
-      }
-      mean /= past_vals.size();
-      for (int i = 0; i < past_vals.size(); i++) {
-        variance += (past_vals[i] - mean) * (past_vals[i] - mean);
-      }
-      variance /= past_vals.size();
-      double std_dev = sqrt(variance);
-      cout << "STD DEV OF " << bounds[res[1]] << " IS " << std_dev << endl;
+
 
 
       // cout << "REAL VALUE OF VALBZ IS " << real_fair_value_map["VALBZ"] << endl;
@@ -361,7 +351,7 @@ int main(int argc, char *argv[])
         buy.push_back(to_string(ids+1));
         buy.push_back(res[1]);
         buy.push_back(string("BUY"));
-        buy.push_back(to_string(int(fairval - std_dev + .5)));
+        buy.push_back(to_string(int(fairval - bounds[res[1]] + .5)));
         buy.push_back(to_string(3));
         conn.send_to_exchange(join(" ", buy));
 
@@ -371,7 +361,7 @@ int main(int argc, char *argv[])
         sell.push_back(to_string(ids+2));
         sell.push_back(res[1]);
         sell.push_back(string("SELL"));
-        sell.push_back(to_string(int(fairval + std_dev + .5)));
+        sell.push_back(to_string(int(fairval + bounds[res[1]] + .5)));
         sell.push_back(to_string(3));
         conn.send_to_exchange(join(" ", sell));
 
