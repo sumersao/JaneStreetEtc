@@ -189,6 +189,14 @@ int main(int argc, char *argv[])
   map<string, double> real_fair_value_map;
   real_fair_value_map["BOND"] = 1000;
 
+  map<string, int> bounds;
+  bounds["VALBZ"] = 0;
+  bounds["VALE"] = 0;
+  bounds["GS"] = 0;
+  bounds["MS"] = 0;
+  bounds["WFC"] = 0;
+  bounds["XLF"] = 0;
+
   std::vector<std::string> data;
   data.push_back(std::string("HELLO"));
   data.push_back(config.team_name);
@@ -240,6 +248,9 @@ int main(int argc, char *argv[])
       //cout << endl;
 
     if(curline.find("BOOK") == 0) {
+      if (res[1] == "BOND") {
+        continue;
+      }
       bookreads++;
 
       // if (res[1] == "GS" || res[1] == "MS" || res[1] == "WFC" || res[1] == "XLS") {
@@ -318,16 +329,14 @@ int main(int argc, char *argv[])
         fairval = real_fair_value_map[res[1]];
       }
 
-      if (res[1] != "VALE" || res[1] != "VALBZ") {
-	      continue;
-      }
+      bounds[res[1]] = abs((temp1-temp2)/2);
       // cout << "REAL VALUE OF VALBZ IS " << real_fair_value_map["VALBZ"] << endl;
       // cout << "REAL VALUE OF VALE IS " << real_fair_value_map["VALE"] << endl;
       // cout << "MARKET VALUE OF VALBZ IS " << fair_value_map["VALBZ"] << endl;
       // cout << "MARKET VALUE OF VALE IS " << fair_value_map["VALE"] << endl;
       // cout << "REAL VALUE OF XLF IS " << real_fair_value_map["XLF"] << endl;
       // cout << lastFV[curind] << " " << fairval << endl;
-	
+
       if(abs(fairval - lastFV[curind]) > 3) {
         //cancel our last two orders
         conn.send_to_exchange("CANCEL " + to_string(lastids[curind].first));
@@ -339,7 +348,7 @@ int main(int argc, char *argv[])
         buy.push_back(to_string(ids+1));
         buy.push_back(res[1]);
         buy.push_back(string("BUY"));
-        buy.push_back(to_string(int(fairval - 10 + .5)));
+        buy.push_back(to_string(int(fairval - bounds[res[1]] + .5)));
         buy.push_back(to_string(3));
         conn.send_to_exchange(join(" ", buy));
 
@@ -349,7 +358,7 @@ int main(int argc, char *argv[])
         sell.push_back(to_string(ids+2));
         sell.push_back(res[1]);
         sell.push_back(string("SELL"));
-        sell.push_back(to_string(int(fairval + 10 + .5)));
+        sell.push_back(to_string(int(bounds[res[1]] + 10 + .5)));
         sell.push_back(to_string(3));
         conn.send_to_exchange(join(" ", sell));
 
