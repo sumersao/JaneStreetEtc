@@ -205,23 +205,23 @@ int main(int argc, char *argv[])
   int ids = 1;
     //start our trading here
 
-  // vector<string> buy;
-  //   buy.push_back(string("ADD"));
-  //   buy.push_back(string("1000"));
-  //   buy.push_back(string("BOND"));
-  //   buy.push_back(string("BUY"));
-  //   buy.push_back(string("999"));
-  //   buy.push_back(string("99"));
-  //   conn.send_to_exchange(join(" ", buy));
+  vector<string> buy;
+  buy.push_back(string("ADD"));
+  buy.push_back(string("1000"));
+  buy.push_back(string("BOND"));
+  buy.push_back(string("BUY"));
+  buy.push_back(string("999"));
+  buy.push_back(string("99"));
+  conn.send_to_exchange(join(" ", buy));
 
-  //   vector<string> sell;
-  //   sell.push_back(string("ADD"));
-  //   sell.push_back(string("1001"));
-  //   sell.push_back(string("BOND"));
-  //   sell.push_back(string("SELL"));
-  //   sell.push_back(string("1001"));
-  //   sell.push_back(string("99"));
-  //   conn.send_to_exchange(join(" ", sell));
+  vector<string> sell;
+  sell.push_back(string("ADD"));
+  sell.push_back(string("1001"));
+  sell.push_back(string("BOND"));
+  sell.push_back(string("SELL"));
+  sell.push_back(string("1001"));
+  sell.push_back(string("99"));
+  conn.send_to_exchange(join(" ", sell));
   int bookreads = 0;
   while(1) {
       //read from the exchange
@@ -234,17 +234,13 @@ int main(int argc, char *argv[])
     }
     // cout << endl;
 
-    for(int i = 0; i < res.size(); i++){
-        cout << res[i] << " ";
-      }
-      cout << endl;
+   // for(int i = 0; i < res.size(); i++){
+     //   cout << res[i] << " ";
+     // }
+      //cout << endl;
 
     if(curline.find("BOOK") == 0) {
       bookreads++;
-      if (res[1] == "BOND") {
-        continue;
-      }
-
 
       // if (res[1] == "GS" || res[1] == "MS" || res[1] == "WFC" || res[1] == "XLS") {
       //   continue;
@@ -306,8 +302,8 @@ int main(int argc, char *argv[])
 
       if (res[1] == "VALE" || res[1] == "VALBZ") {
         if (fair_value_map["VALBZ"] != 0 && fair_value_map["VALE"] != 0) {
-          real_fair_value_map["VALBZ"] = (1/3.0) * fair_value_map["VALE"] + (2/3.0) * fair_value_map["VALBZ"];
-          real_fair_value_map["VALE"] = (1/3.0) * fair_value_map["VALE"] + (2/3.0) * fair_value_map["VALBZ"];
+          real_fair_value_map["VALBZ"] = (2/3.0) * fair_value_map["VALE"] + (1/3.0) * fair_value_map["VALBZ"];
+          real_fair_value_map["VALE"] = (2/3.0) * fair_value_map["VALE"] + (1/3.0) * fair_value_map["VALBZ"];
           // cout << "REAL FAIR VALUE OF VALBZ/VALE IS " << (1/3.0) * fair_value_map["VALE"] + (2/3.0) * fair_value_map["VALBZ"] << endl;
         }
       } else {
@@ -321,13 +317,17 @@ int main(int argc, char *argv[])
       if (res[1] == "XLF" || res[1] == "VALBZ" || res[1] == "VALE") {
         fairval = real_fair_value_map[res[1]];
       }
+
+      if (res[1] != "VALE" || res[1] != "VALBZ") {
+	      continue;
+      }
       // cout << "REAL VALUE OF VALBZ IS " << real_fair_value_map["VALBZ"] << endl;
       // cout << "REAL VALUE OF VALE IS " << real_fair_value_map["VALE"] << endl;
       // cout << "MARKET VALUE OF VALBZ IS " << fair_value_map["VALBZ"] << endl;
       // cout << "MARKET VALUE OF VALE IS " << fair_value_map["VALE"] << endl;
       // cout << "REAL VALUE OF XLF IS " << real_fair_value_map["XLF"] << endl;
-      cout << lastFV[curind] << " " << fairval << endl;
-
+      // cout << lastFV[curind] << " " << fairval << endl;
+	
       if(abs(fairval - lastFV[curind]) > 3) {
         //cancel our last two orders
         conn.send_to_exchange("CANCEL " + to_string(lastids[curind].first));
@@ -339,8 +339,8 @@ int main(int argc, char *argv[])
         buy.push_back(to_string(ids+1));
         buy.push_back(res[1]);
         buy.push_back(string("BUY"));
-        buy.push_back(to_string(int(fairval - 1 + .5)));
-        buy.push_back(to_string(9));
+        buy.push_back(to_string(int(fairval - 10 + .5)));
+        buy.push_back(to_string(3));
         conn.send_to_exchange(join(" ", buy));
 
 
@@ -349,8 +349,8 @@ int main(int argc, char *argv[])
         sell.push_back(to_string(ids+2));
         sell.push_back(res[1]);
         sell.push_back(string("SELL"));
-        sell.push_back(to_string(int(fairval + 1 + .5)));
-        sell.push_back(to_string(9));
+        sell.push_back(to_string(int(fairval + 10 + .5)));
+        sell.push_back(to_string(3));
         conn.send_to_exchange(join(" ", sell));
 
         lastFV[curind] = fairval;
