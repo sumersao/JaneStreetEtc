@@ -293,6 +293,8 @@ int main(int argc, char *argv[])
 
       int todays = (temp1 + temp2)/2;
 
+      cout << temp1 << " " << temp2 <<  " " << todays << endl;
+
       //we just need to build an SMA for now
       if(bookreads[curind] <= Nsize) {
         int sum = SMA[curind].first;
@@ -329,12 +331,12 @@ int main(int argc, char *argv[])
         fairval = int(real_fair_value_map[res[1]]);
       }
 
-      // // cout << "REAL VALUE OF VALBZ IS " << real_fair_value_map["VALBZ"] << endl;
-      // // cout << "REAL VALUE OF VALE IS " << real_fair_value_map["VALE"] << endl;
-      // // cout << "MARKET VALUE OF VALBZ IS " << fair_value_map["VALBZ"] << endl;
-      // // cout << "MARKET VALUE OF VALE IS " << fair_value_map["VALE"] << endl;
-      // // cout << "REAL VALUE OF XLF IS " << real_fair_value_map["XLF"] << endl;
-      // cout << lastFV[curind] << " " << fairval << endl;
+      cout << "REAL VALUE OF VALBZ IS " << real_fair_value_map["VALBZ"] << endl;
+      cout << "REAL VALUE OF VALE IS " << real_fair_value_map["VALE"] << endl;
+      cout << "MARKET VALUE OF VALBZ IS " << fair_value_map["VALBZ"] << endl;
+      cout << "MARKET VALUE OF VALE IS " << fair_value_map["VALE"] << endl;
+      cout << "REAL VALUE OF XLF IS " << real_fair_value_map["XLF"] << endl;
+      cout << lastFV[curind] << " " << fairval << endl;
 
       if(abs(fairval - lastFV[curind]) >= 3) {
         //cancel our last two orders
@@ -349,8 +351,8 @@ int main(int argc, char *argv[])
         buy.push_back(to_string(ids+1));
         buy.push_back(res[1]);
         buy.push_back(string("BUY"));
-        buy.push_back(to_string(int(fairval - 1)));
-        buy.push_back(to_string(7));
+        buy.push_back(to_string(int(fairval - 3)));
+        buy.push_back(to_string(3));
         conn.send_to_exchange(join(" ", buy));
 
         for(int i = 0; i < buy.size(); i++){
@@ -363,8 +365,8 @@ int main(int argc, char *argv[])
         sell.push_back(to_string(ids+2));
         sell.push_back(res[1]);
         sell.push_back(string("SELL"));
-        sell.push_back(to_string(int(fairval + 1)));
-        sell.push_back(to_string(7));
+        sell.push_back(to_string(int(fairval + 3)));
+        sell.push_back(to_string(3));
         conn.send_to_exchange(join(" ", sell));
 
         for(int i = 0; i < sell.size(); i++){
@@ -376,8 +378,6 @@ int main(int argc, char *argv[])
           cout << res[i] << " ";
         }
         cout << endl;
-
-
 
         lastFV[curind] = fairval;
         lastids[curind] = make_pair(ids+1, ids+2);
