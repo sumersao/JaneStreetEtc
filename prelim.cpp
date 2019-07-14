@@ -246,10 +246,10 @@ int main(int argc, char *argv[])
     if(curline.find("BOOK") == 0) {
       //type is res[1]"
 
-      for(int i = 0; i < res.size(); i++){
-        cout << res[i] << " ";
-      }
-      cout << endl;
+      // for(int i = 0; i < res.size(); i++){
+      //   cout << res[i] << " ";
+      // }
+      // cout << endl;
 
       int curind = getind(securids, res[1]);
       bookreads[curind]++;
@@ -292,13 +292,12 @@ int main(int argc, char *argv[])
 
       int temp2 = getmed(hi, tot); 
 
-
       int todays = (temp1 + temp2)/2;
 
       if(temp1 == 0) todays = temp2;
       else if(temp2 == 0) todays = temp1;
 
-      cout << temp1 << " " << temp2 <<  " " << todays << endl;
+      // cout << temp1 << " " << temp2 <<  " " << todays << endl;
 
       //we just need to build an SMA for now
       if(bookreads[curind] <= Nsize) {
@@ -336,14 +335,14 @@ int main(int argc, char *argv[])
         fairval = int(real_fair_value_map[res[1]]);
       }
 
-      cout << lastFV[curind] << " " << fairval << endl;
+      // cout << lastFV[curind] << " " << fairval << endl;
 
       if(abs(fairval - lastFV[curind]) >= 3) {
         //cancel our last two orders
         conn.send_to_exchange("CANCEL " + to_string(lastids[curind].first));
         conn.send_to_exchange("CANCEL " + to_string(lastids[curind].second));
 
-        cout << lastids[curind].first << " " << lastids[curind].second << endl;
+        // cout << lastids[curind].first << " " << lastids[curind].second << endl;
 
         //update orders
         vector<string> buy;
@@ -351,33 +350,33 @@ int main(int argc, char *argv[])
         buy.push_back(to_string(ids+1));
         buy.push_back(res[1]);
         buy.push_back(string("BUY"));
-        buy.push_back(to_string(int(fairval - 10)));
+        buy.push_back(to_string(int(fairval - 7)));
         buy.push_back(to_string(3));
         conn.send_to_exchange(join(" ", buy));
 
-        for(int i = 0; i < buy.size(); i++){
-          cout << buy[i] << " ";
-        }
-        cout << endl;
+        // for(int i = 0; i < buy.size(); i++){
+        //   cout << buy[i] << " ";
+        // }
+        // cout << endl;
 
         vector<string> sell;
         sell.push_back(string("ADD"));
         sell.push_back(to_string(ids+2));
         sell.push_back(res[1]);
         sell.push_back(string("SELL"));
-        sell.push_back(to_string(int(fairval + 10)));
+        sell.push_back(to_string(int(fairval + 7)));
         sell.push_back(to_string(3));
         conn.send_to_exchange(join(" ", sell));
 
-        for(int i = 0; i < sell.size(); i++){
-          cout << sell[i] << " ";
-        }
-        cout << endl;
+        // for(int i = 0; i < sell.size(); i++){
+        //   cout << sell[i] << " ";
+        // }
+        // cout << endl;
 
-        for(int i = 0; i < res.size(); i++){
-          cout << res[i] << " ";
-        }
-        cout << endl;
+        // for(int i = 0; i < res.size(); i++){
+        //   cout << res[i] << " ";
+        // }
+        // cout << endl;
 
         lastFV[curind] = fairval;
         lastids[curind] = make_pair(ids+1, ids+2);
