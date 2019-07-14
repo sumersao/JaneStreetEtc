@@ -164,7 +164,7 @@ int getmed(vector<pair<int, int> >& a, int tot){
 }
 
 int getmean(vector<pair<int, int> >& a, int tot){
-  long long rsum = 0;
+  long long rsum = 0L;
   for(int i = 0; i < a.size(); i++){
     rsum += (1LL*a[i].second )* a[i].first;
   }
