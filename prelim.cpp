@@ -281,7 +281,7 @@ int main(int argc, char *argv[])
 
       //get median
       // int temp1 = getmed(low, tot); 
-      int temp1 = getmeam(low, tot);
+      int temp1 = getmean(low, tot);
 
       //here is sell
       tot = 0;
