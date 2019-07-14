@@ -338,7 +338,7 @@ int main(int argc, char *argv[])
 
       cout << lastFV[curind] << " " << fairval << endl;
 
-      if(res[1] != "VALBZ") continue;
+      if(res[1] != "VALBZ" || res != "VALE") continue;
 
       if(abs(fairval - lastFV[curind]) >= 3) {
         //cancel our last two orders
