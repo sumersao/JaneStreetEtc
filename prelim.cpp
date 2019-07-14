@@ -281,8 +281,8 @@ int main(int argc, char *argv[])
       }
 
       //get median
-      // int temp1 = getmed(low, tot); 
-      int temp1 = getmean(low, tot);
+      int temp1 = getmed(low, tot); 
+      // int temp1 = getmean(low, tot);
 
       //here is sell
       tot = 0;
@@ -300,8 +300,8 @@ int main(int argc, char *argv[])
 
       }
 
-      // int temp2 = getmed(hi, tot); 
-      int temp2 = getmean(hi, tot);
+      int temp2 = getmed(hi, tot); 
+      // int temp2 = getmean(hi, tot);
 
       int todays = (temp1 + temp2)/2;
 
@@ -362,7 +362,7 @@ int main(int argc, char *argv[])
         buy.push_back(res[1]);
         buy.push_back(string("BUY"));
         buy.push_back(to_string(int(fairval - 7)));
-        buy.push_back(to_string(amt[curind]/2));
+        buy.push_back(to_string(3));
         conn.send_to_exchange(join(" ", buy));
 
         // for(int i = 0; i < buy.size(); i++){
@@ -376,7 +376,7 @@ int main(int argc, char *argv[])
         sell.push_back(res[1]);
         sell.push_back(string("SELL"));
         sell.push_back(to_string(int(fairval + 7)));
-        sell.push_back(to_string(amt[curind]/2));
+        sell.push_back(to_string(3));
         conn.send_to_exchange(join(" ", sell));
 
         // for(int i = 0; i < sell.size(); i++){
