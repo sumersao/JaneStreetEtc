@@ -179,13 +179,13 @@ int main(int argc, char *argv[])
 
   vector<pair<int, int> > lastids;
   vector<double> lastFV;
-  vector<pair<int, int> >avgFV;
+  vector<pair<int, int> >SMA;
   vector<int> bookreads;
   for(int i = 0; i < 7; i++){
     lastids.push_back(make_pair(0, 0));
     lastFV.push_back(0.0);
     bookreads.push_back(0);
-    avgFV.push_back(make_pair(0,0));
+    SMA.push_back(make_pair(0,0));
   }
 
   vector<int> amt;
@@ -228,6 +228,7 @@ int main(int argc, char *argv[])
 
   int ids = 1;
   int Nsize = 5;
+  double smoother = 2.0/(1.0 + 1.0*Nsize);
     //start our trading here
   while(1) {
       //read from the exchange
@@ -243,6 +244,8 @@ int main(int argc, char *argv[])
     
 
     if(curline.find("BOOK") == 0) {
+
+      bookreads[curind]++;
       //type is res[1]"
       for(int i = 0; i < res.size(); i++){
         cout << res[i] << " ";
@@ -289,19 +292,25 @@ int main(int argc, char *argv[])
 
       int temp2 = getmed(hi, tot); 
 
-      if(bookreads[curind]%Nsize == 0){
-        bookreads[curind] == 0;
-      }
+      int todays = (temp1 + temp2)/2;
 
-      if (fair_value_map[res[1]] == 0) {
-        // SETS INTIAL VALUE
-        fair_value_map[res[1]] = (temp2 + temp1)/2.0;
-      } else {
-        double val = bookreads[curind];
-        double smoothing = 2.0;
-        fair_value_map[res[1]] = (temp1 + temp2)/2.0 * (smoothing/(1.0 + val)) + fair_value_map[res[1]] * (1 - smoothing/(val + 1.0));
+      //we just need to build an SMA for now
+      if(bookreads[curind] <= Nsize) {
+        int sum = SMA[curind].first;
+        int days = SMA[curind].second;
+        SMA[curind] = make_pair(sum + todays, days + 1);
+        fair_value_map[res[1]] = (double)((sum + todays)/(1.0*(days+1)));
       }
-
+      else if(bookreads[curind] == Nsize + 1) {
+        //now we slide with our SMA
+        SMAval = SMA[curind].first/SMA.curind[second];
+        fair_value_map[res[1]] = (todays - SMAval)*smoother + SMAval;
+      } 
+      else {
+        //now we slide with our EMA
+        EMAval = fair_value_map[res[1]];
+        fair_value_map[res[1]] = (todays - EMAval)*smoother + EMAval;
+      }
 
       if (res[1] == "VALE" || res[1] == "VALBZ") {
         if (fair_value_map["VALBZ"] != 0 && fair_value_map["VALE"] != 0) {
@@ -321,14 +330,14 @@ int main(int argc, char *argv[])
         fairval = int(real_fair_value_map[res[1]]);
       }
 
-      // cout << "REAL VALUE OF VALBZ IS " << real_fair_value_map["VALBZ"] << endl;
-      // cout << "REAL VALUE OF VALE IS " << real_fair_value_map["VALE"] << endl;
-      // cout << "MARKET VALUE OF VALBZ IS " << fair_value_map["VALBZ"] << endl;
-      // cout << "MARKET VALUE OF VALE IS " << fair_value_map["VALE"] << endl;
-      // cout << "REAL VALUE OF XLF IS " << real_fair_value_map["XLF"] << endl;
-      cout << lastFV[curind] << " " << fairval << endl;
+      // // cout << "REAL VALUE OF VALBZ IS " << real_fair_value_map["VALBZ"] << endl;
+      // // cout << "REAL VALUE OF VALE IS " << real_fair_value_map["VALE"] << endl;
+      // // cout << "MARKET VALUE OF VALBZ IS " << fair_value_map["VALBZ"] << endl;
+      // // cout << "MARKET VALUE OF VALE IS " << fair_value_map["VALE"] << endl;
+      // // cout << "REAL VALUE OF XLF IS " << real_fair_value_map["XLF"] << endl;
+      // cout << lastFV[curind] << " " << fairval << endl;
 
-      if(abs(fairval - lastFV[curind]) > 3) {
+      if(abs(fairval - lastFV[curind]) >= 3) {
         //cancel our last two orders
         conn.send_to_exchange("CANCEL " + to_string(lastids[curind].first));
         conn.send_to_exchange("CANCEL " + to_string(lastids[curind].second));
@@ -375,7 +384,6 @@ int main(int argc, char *argv[])
         lastids[curind] = make_pair(ids+1, ids+2);
         ids+=2;
       }
-      bookreads[curind]++;
     }
     else if(curline.find("TRADE") == 0) {
 
