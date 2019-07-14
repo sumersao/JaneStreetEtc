@@ -203,7 +203,6 @@ int main(int argc, char *argv[])
   Connection conn(config);
 
   map<string, double> fair_value_map;
-  map<string, int> inventory;
   fair_value_map["VALBZ"] = 0.0;
   fair_value_map["VALE"] = 0.0;
   fair_value_map["GS"] = 0.0;
@@ -382,13 +381,6 @@ int main(int argc, char *argv[])
         lastFV[curind] = fairval;
         lastids[curind] = make_pair(ids+1, ids+2);
         ids+=2;
-      }
-    }
-    else if(curline.find("FILL") == 0) {
-      if (res[3] == "BUY") {
-          inventory[res[1]] += res[5];
-      } else {
-        inventory[res[1]] += res[5];
       }
     }
     else if(curline.find("TRADE") == 0) {
