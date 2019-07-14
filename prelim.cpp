@@ -38,7 +38,7 @@ private:
     1 = slower
     2 = empty
   */
-  static int const test_exchange_index = 1;
+  static int const test_exchange_index = 0;
 public:
   std::string team_name;
   std::string exchange_hostname;
@@ -319,8 +319,8 @@ int main(int argc, char *argv[])
 
       if (res[1] == "VALE" || res[1] == "VALBZ") {
         if (fair_value_map["VALBZ"] != 0 && fair_value_map["VALE"] != 0) {
-          real_fair_value_map["VALBZ"] = (1/3.0) * fair_value_map["VALE"] + (2/3.0) * fair_value_map["VALBZ"];
-          real_fair_value_map["VALE"] = (1/3.0) * fair_value_map["VALE"] + (2/3.0) * fair_value_map["VALBZ"];
+          real_fair_value_map["VALBZ"] = (3/4.0) * fair_value_map["VALE"] + (1/4.0) * fair_value_map["VALBZ"];
+          real_fair_value_map["VALE"] = (3/4.0) * fair_value_map["VALE"] + (1/4.0) * fair_value_map["VALBZ"];
           // cout << "REAL FAIR VALUE OF VALBZ/VALE IS " << (1/3.0) * fair_value_map["VALE"] + (2/3.0) * fair_value_map["VALBZ"] << endl;
         }
       } else {
@@ -335,11 +335,11 @@ int main(int argc, char *argv[])
         fairval = int(real_fair_value_map[res[1]]);
       }
 
-      cout << "REAL VALUE OF VALBZ IS " << real_fair_value_map["VALBZ"] << endl;
-      cout << "REAL VALUE OF VALE IS " << real_fair_value_map["VALE"] << endl;
-      cout << "MARKET VALUE OF VALBZ IS " << fair_value_map["VALBZ"] << endl;
-      cout << "MARKET VALUE OF VALE IS " << fair_value_map["VALE"] << endl;
-      cout << "REAL VALUE OF XLF IS " << real_fair_value_map["XLF"] << endl;
+      // cout << "REAL VALUE OF VALBZ IS " << real_fair_value_map["VALBZ"] << endl;
+      // cout << "REAL VALUE OF VALE IS " << real_fair_value_map["VALE"] << endl;
+      // cout << "MARKET VALUE OF VALBZ IS " << fair_value_map["VALBZ"] << endl;
+      // cout << "MARKET VALUE OF VALE IS " << fair_value_map["VALE"] << endl;
+      // cout << "REAL VALUE OF XLF IS " << real_fair_value_map["XLF"] << endl;
       cout << lastFV[curind] << " " << fairval << endl;
 
       if(abs(fairval - lastFV[curind]) >= 3) {
