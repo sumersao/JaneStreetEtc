@@ -245,7 +245,7 @@ int main(int argc, char *argv[])
 
     if(curline.find("BOOK") == 0) {
       //type is res[1]"
-      if(res[1] != "XLF") continue;
+
       for(int i = 0; i < res.size(); i++){
         cout << res[i] << " ";
       }
@@ -337,6 +337,8 @@ int main(int argc, char *argv[])
       }
 
       cout << lastFV[curind] << " " << fairval << endl;
+
+      if(res[1] != "XLF") continue;
 
       if(abs(fairval - lastFV[curind]) >= 3) {
         //cancel our last two orders
