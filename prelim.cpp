@@ -291,7 +291,11 @@ int main(int argc, char *argv[])
 
       int temp2 = getmed(hi, tot); 
 
+
       int todays = (temp1 + temp2)/2;
+
+      if(temp1 == 0) todays = temp2;
+      else if(temp2 == 0) todays = temp1;
 
       cout << temp1 << " " << temp2 <<  " " << todays << endl;
 
