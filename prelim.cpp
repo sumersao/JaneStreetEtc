@@ -337,7 +337,7 @@ int main(int argc, char *argv[])
 
       // cout << lastFV[curind] << " " << fairval << endl;
 
-      if(abs(fairval - lastFV[curind]) >= 2) {
+      if(abs(fairval - lastFV[curind]) >= 3) {
         //cancel our last two orders
         conn.send_to_exchange("CANCEL " + to_string(lastids[curind].first));
         conn.send_to_exchange("CANCEL " + to_string(lastids[curind].second));
@@ -351,7 +351,7 @@ int main(int argc, char *argv[])
         buy.push_back(res[1]);
         buy.push_back(string("BUY"));
         buy.push_back(to_string(int(fairval - 7)));
-        buy.push_back(to_string(3));
+        buy.push_back(to_string(4));
         conn.send_to_exchange(join(" ", buy));
 
         // for(int i = 0; i < buy.size(); i++){
@@ -365,7 +365,7 @@ int main(int argc, char *argv[])
         sell.push_back(res[1]);
         sell.push_back(string("SELL"));
         sell.push_back(to_string(int(fairval + 7)));
-        sell.push_back(to_string(3));
+        sell.push_back(to_string(4));
         conn.send_to_exchange(join(" ", sell));
 
         // for(int i = 0; i < sell.size(); i++){
