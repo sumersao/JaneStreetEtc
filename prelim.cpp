@@ -203,6 +203,7 @@ int main(int argc, char *argv[])
   Connection conn(config);
 
   map<string, double> fair_value_map;
+  map<string, int> inventory;
   fair_value_map["VALBZ"] = 0.0;
   fair_value_map["VALE"] = 0.0;
   fair_value_map["GS"] = 0.0;
@@ -319,13 +320,13 @@ int main(int argc, char *argv[])
 
       if (res[1] == "VALE" || res[1] == "VALBZ") {
         if (fair_value_map["VALBZ"] != 0 && fair_value_map["VALE"] != 0) {
-          real_fair_value_map["VALBZ"] = (1/4.0) * fair_value_map["VALE"] + (3/4.0) * fair_value_map["VALBZ"];
-          real_fair_value_map["VALE"] = (1/4.0) * fair_value_map["VALE"] + (3/4.0) * fair_value_map["VALBZ"];
+          real_fair_value_map["VALBZ"] = (1/5.0) * fair_value_map["VALE"] + (4/5.0) * fair_value_map["VALBZ"];
+          real_fair_value_map["VALE"] = (1/5.0) * fair_value_map["VALE"] + (4/5.0) * fair_value_map["VALBZ"];
           // cout << "REAL FAIR VALUE OF VALBZ/VALE IS " << (1/3.0) * fair_value_map["VALE"] + (2/3.0) * fair_value_map["VALBZ"] << endl;
         }
       } else {
         if (fair_value_map["GS"] != 0 && fair_value_map["MS"] != 0 && fair_value_map["WFC"] != 0) {
-          real_fair_value_map["XLF"] = (3 * fair_value_map["BOND"] + 2 * fair_value_map["GS"] + 3 * fair_value_map["MS"] + 2 * fair_value_map["WFC"])/10.0;
+          real_fair_value_map["XLF"] = 0.8*((3 * fair_value_map["BOND"] + 2 * fair_value_map["GS"] + 3 * fair_value_map["MS"] + 2 * fair_value_map["WFC"])/10.0) + 0.2*fair_value_map["XLF"];
           // cout << "REAL FAIR VALUE OF XLF IS " << real_fair_value_map["XLF"] << endl;
         }
       }
@@ -351,7 +352,7 @@ int main(int argc, char *argv[])
         buy.push_back(res[1]);
         buy.push_back(string("BUY"));
         buy.push_back(to_string(int(fairval - 7)));
-        buy.push_back(to_string(3));
+        buy.push_back(to_string(5));
         conn.send_to_exchange(join(" ", buy));
 
         // for(int i = 0; i < buy.size(); i++){
@@ -365,7 +366,7 @@ int main(int argc, char *argv[])
         sell.push_back(res[1]);
         sell.push_back(string("SELL"));
         sell.push_back(to_string(int(fairval + 7)));
-        sell.push_back(to_string(3));
+        sell.push_back(to_string(5));
         conn.send_to_exchange(join(" ", sell));
 
         // for(int i = 0; i < sell.size(); i++){
@@ -381,6 +382,13 @@ int main(int argc, char *argv[])
         lastFV[curind] = fairval;
         lastids[curind] = make_pair(ids+1, ids+2);
         ids+=2;
+      }
+    }
+    else if(curline.find("FILL") == 0) {
+      if (res[3] == "BUY") {
+          inventory[res[1]] += res[5];
+      } else {
+        inventory[res[1]] += res[5];
       }
     }
     else if(curline.find("TRADE") == 0) {
