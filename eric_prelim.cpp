@@ -326,7 +326,7 @@ int main(int argc, char *argv[])
 
       bounds[res[1]].push_back(fairval);
       if (bounds[res[1]].size () > 20) {
-        bounds[res[1]].pop_back();
+        bounds[res[1]].erase(bounds[res[1]].begin());
       }
       vector<int> past_vals = bounds[res[1]];
       double variance = 0;
