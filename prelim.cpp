@@ -320,8 +320,8 @@ int main(int argc, char *argv[])
 
       if (res[1] == "VALE" || res[1] == "VALBZ") {
         if (fair_value_map["VALBZ"] != 0 && fair_value_map["VALE"] != 0) {
-          real_fair_value_map["VALBZ"] = (3/4.0) * fair_value_map["VALE"] + (1/4.0) * fair_value_map["VALBZ"];
-          real_fair_value_map["VALE"] = (3/4.0) * fair_value_map["VALE"] + (1/4.0) * fair_value_map["VALBZ"];
+          real_fair_value_map["VALBZ"] = (1/4.0) * fair_value_map["VALE"] + (3/4.0) * fair_value_map["VALBZ"];
+          real_fair_value_map["VALE"] = (1/4.0) * fair_value_map["VALE"] + (3/4.0) * fair_value_map["VALBZ"];
           // cout << "REAL FAIR VALUE OF VALBZ/VALE IS " << (1/3.0) * fair_value_map["VALE"] + (2/3.0) * fair_value_map["VALBZ"] << endl;
         }
       } else {
@@ -338,7 +338,7 @@ int main(int argc, char *argv[])
 
       cout << lastFV[curind] << " " << fairval << endl;
 
-      if(res[1] != "XLF") continue;
+      if(res[1] != "VALBZ") continue;
 
       if(abs(fairval - lastFV[curind]) >= 3) {
         //cancel our last two orders
