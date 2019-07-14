@@ -244,8 +244,6 @@ int main(int argc, char *argv[])
     
 
     if(curline.find("BOOK") == 0) {
-
-      bookreads[curind]++;
       //type is res[1]"
       for(int i = 0; i < res.size(); i++){
         cout << res[i] << " ";
@@ -253,6 +251,7 @@ int main(int argc, char *argv[])
       cout << endl;
 
       int curind = getind(securids, res[1]);
+      bookreads[curind]++;
         //find location of sell
       int locsell = getind(res, "SELL");
 
@@ -303,12 +302,12 @@ int main(int argc, char *argv[])
       }
       else if(bookreads[curind] == Nsize + 1) {
         //now we slide with our SMA
-        SMAval = SMA[curind].first/SMA.curind[second];
+        double SMAval = (double) (SMA[curind].first/(1.0 * SMA.curind[second]));
         fair_value_map[res[1]] = (todays - SMAval)*smoother + SMAval;
       } 
       else {
         //now we slide with our EMA
-        EMAval = fair_value_map[res[1]];
+        double EMAval = fair_value_map[res[1]];
         fair_value_map[res[1]] = (todays - EMAval)*smoother + EMAval;
       }
 
@@ -351,7 +350,7 @@ int main(int argc, char *argv[])
         buy.push_back(res[1]);
         buy.push_back(string("BUY"));
         buy.push_back(to_string(int(fairval - 1)));
-        buy.push_back(to_string(3));
+        buy.push_back(to_string(7));
         conn.send_to_exchange(join(" ", buy));
 
         for(int i = 0; i < buy.size(); i++){
@@ -365,7 +364,7 @@ int main(int argc, char *argv[])
         sell.push_back(res[1]);
         sell.push_back(string("SELL"));
         sell.push_back(to_string(int(fairval + 1)));
-        sell.push_back(to_string(3));
+        sell.push_back(to_string(7));
         conn.send_to_exchange(join(" ", sell));
 
         for(int i = 0; i < sell.size(); i++){
