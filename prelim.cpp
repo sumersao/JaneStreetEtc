@@ -160,7 +160,7 @@ int getmed(vector<pair<int, int> >& a, int tot){
     }
     rsum += a[i].second;
   }
-  if(rsum >= tot/2) return a.size() - 1;
+  if(rsum >= tot/2) return a[a.size() - 1].first;
 }
 
 int main(int argc, char *argv[])
