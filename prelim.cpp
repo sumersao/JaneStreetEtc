@@ -163,6 +163,14 @@ int getmed(vector<pair<int, int> >& a, int tot){
   if(rsum >= tot/2) return a[a.size() - 1].first;
 }
 
+int getmean(vector<pair<int, int> >& a, int tot){
+  long long rsum = 0;
+  for(int i = 0; i < a.size(); i++){
+    rsum += (1LL*a[i].second )* a[i].first;
+  }
+  return int(rsum/(1.0*tot));
+}
+
 int main(int argc, char *argv[])
 {
   ios_base::sync_with_stdio(false);
@@ -272,7 +280,8 @@ int main(int argc, char *argv[])
       }
 
       //get median
-      int temp1 = getmed(low, tot); 
+      // int temp1 = getmed(low, tot); 
+      int temp1 = getmeam(low, tot);
 
       //here is sell
       tot = 0;
@@ -290,14 +299,15 @@ int main(int argc, char *argv[])
 
       }
 
-      int temp2 = getmed(hi, tot); 
+      // int temp2 = getmed(hi, tot); 
+      int temp2 = getmean(hi, tot);
 
       int todays = (temp1 + temp2)/2;
 
       if(temp1 == 0) todays = temp2;
       else if(temp2 == 0) todays = temp1;
 
-      // cout << temp1 << " " << temp2 <<  " " << todays << endl;
+      cout << temp1 << " " << temp2 <<  " " << todays << endl;
 
       //we just need to build an SMA for now
       if(bookreads[curind] <= Nsize) {
