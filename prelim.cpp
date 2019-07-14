@@ -302,7 +302,7 @@ int main(int argc, char *argv[])
       }
       else if(bookreads[curind] == Nsize + 1) {
         //now we slide with our SMA
-        double SMAval = (double) (SMA[curind].first/(1.0 * SMA.curind[second]));
+        double SMAval = (double) (SMA[curind].first/(1.0 * SMA[curind].second));
         fair_value_map[res[1]] = (todays - SMAval)*smoother + SMAval;
       } 
       else {
