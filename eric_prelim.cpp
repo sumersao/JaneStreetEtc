@@ -192,11 +192,11 @@ int main(int argc, char *argv[])
 
   map<string, int> bounds;
   bounds["XLF"] = 10;
-  bounds["VALE"] = 3;
-  bounds["WFC"] = 1;
-  bounds["GS"] = 1;
-  bounds["MS"] = 1;
-  bounds["VALBZ"] = 1;
+  bounds["VALE"] = 4;
+  bounds["WFC"] = 2;
+  bounds["GS"] = 2;
+  bounds["MS"] = 2;
+  bounds["VALBZ"] = 2;
 
   std::vector<std::string> data;
   data.push_back(std::string("HELLO"));
