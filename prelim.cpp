@@ -227,7 +227,7 @@ int main(int argc, char *argv[])
   cout << "The exchange replied: " << line << endl;
 
   int ids = 1;
-  int Nsize = 10;
+  int Nsize = 8;
   double smoother = 2.0/(1.0 + 1.0*Nsize);
     //start our trading here
   while(1) {
@@ -337,7 +337,7 @@ int main(int argc, char *argv[])
 
       // cout << lastFV[curind] << " " << fairval << endl;
 
-      if(abs(fairval - lastFV[curind]) >= 5) {
+      if(abs(fairval - lastFV[curind]) >= 3) {
         //cancel our last two orders
         conn.send_to_exchange("CANCEL " + to_string(lastids[curind].first));
         conn.send_to_exchange("CANCEL " + to_string(lastids[curind].second));
@@ -350,7 +350,7 @@ int main(int argc, char *argv[])
         buy.push_back(to_string(ids+1));
         buy.push_back(res[1]);
         buy.push_back(string("BUY"));
-        buy.push_back(to_string(int(fairval - 7)));
+        buy.push_back(to_string(int(fairval - 6)));
         buy.push_back(to_string(4));
         conn.send_to_exchange(join(" ", buy));
 
@@ -364,7 +364,7 @@ int main(int argc, char *argv[])
         sell.push_back(to_string(ids+2));
         sell.push_back(res[1]);
         sell.push_back(string("SELL"));
-        sell.push_back(to_string(int(fairval + 7)));
+        sell.push_back(to_string(int(fairval + 6)));
         sell.push_back(to_string(4));
         conn.send_to_exchange(join(" ", sell));
 
